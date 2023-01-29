@@ -151,7 +151,7 @@ Integration Specialist I - Colton Dalton
 
 Integration Specialist II - Pratik Chaudhari 
 
-Integration Specialist II - Tara Poudyel
+Integration Specialist III - Tara Poudyel
 
 ## Weekly Meeting 
 Thursday at 5:30 PM on Teams 
