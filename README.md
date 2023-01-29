@@ -23,7 +23,7 @@ Do you struggle to keep track of your workouts? Do you wish you could compare yo
 Using your Android device, Social Workout is a great way to keep yourself and your friends both motivated and accountable in the gym. Set reminders to remember to workout and record your workouts. Watch how you’ve grown over a given time period and compare that with the growth of your friends. 
 
 ## Storyboard 
-[Social Workout Storyboard] (https://app.milanote.com/1Pmdwa1OSwWD85/social-workout-storyboard?p=URvyliO0qLa)
+[Social Workout Storyboard](https://app.milanote.com/1Pmdwa1OSwWD85/social-workout-storyboard?p=URvyliO0qLa)
 
 ## Functional Requirements 
 ### Requirement 1: Search for Exercises  
