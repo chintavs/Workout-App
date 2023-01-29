@@ -38,11 +38,13 @@ Database of exercises is available and accessible.
 
 #### Examples 
 1.1 
+
 **Given** a feed of exercises is available.
 **When** I search for “Bicep Curls”
 **Then** I should receive a couple results that work out the Biceps. 
 
 1.2 
+
 **Given** a feed of exercises is available.
 **When** I search for “Bench Press”
 **Then** I should receive a couple results related to “Bench Press” exercises 
@@ -65,6 +67,7 @@ User is logged into the application
 
 #### Examples 
 1.1 
+
 **Given** that the user has completed a workout 
 **When** 
 - Select “Record workout”
@@ -86,6 +89,7 @@ User is logged into the application
  - Duration of Workout: 8 minutes
 
 1.2 
+
 **Given** that the user has completed a workout 
 **When** 
 - Select “Record workout” 
@@ -113,6 +117,7 @@ As a User, I want to be able to track my workout progress and measure goals incl
 
 #### Examples
 1.1
+
 **Given** that the user has set their workout goals and completed a workout 
 **When** the user opens the app 
 **Then** the user can view their progress towards their goals, including the number of workouts completed, total duration of workouts completed, total number of calories burned, and how much they have left to reach their goal.  
