@@ -13,6 +13,8 @@ Vishvak Chintalapalli
 
 Pratik Chaudhari 
 
+Tara Poudyel
+
 ## Introduction 
 
 Do you struggle to keep track of your workouts? Do you wish you could compare your growth with that of your friends? Social Workout can assist you by: 
