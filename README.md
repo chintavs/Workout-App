@@ -127,17 +127,26 @@ As a User, I want to be able to track my workout progress and measure goals incl
 
 ## Class Diagram Description 
 MainActivity: The first screen the user sees. This will have the users profile along with the different workouts they’ve been recommended or created 
+
 RetrofitInstance: Boostrap class required for Retrofit. 
+
 User: Noun class that represents the user profile 
+
 Workout: Noun class that represents the recommended workouts and created workouts 
+
 IUserDAO: Interface for Retrofit to find and parse User JSON. 
+
 IWorkoutDAO: Interface for Room to persist Workout data. 
 
 ## Scrum Roles 
 Scrum Master - Sean Arthur 
+
 UI Specialist I - William Koonce 
+
 UI Specialist II - Vishvak Chintalapalli 
+
 Integration Specialist I - Colton Dalton 
+
 Integration Specialist II - Pratik Chaudhari 
 
 ## Weekly Meeting 
