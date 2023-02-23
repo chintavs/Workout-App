@@ -24,6 +24,10 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
@@ -45,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,6 +58,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             WorkoutAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -61,6 +67,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Main("Android")
                 }
+
             }
         }
     }
@@ -70,17 +77,66 @@ class MainActivity : ComponentActivity() {
 fun Main(name: String) {
     Column(    modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Text(text = "Hello $name!",
+    ) {   val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+        Scaffold(
+
+            scaffoldState = scaffoldState,
+
+            topBar = {
+                AppBar (
+                    onNavigationIconClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+
+                    }
+                )
+            },
+            drawerGesturesEnabled = scaffoldState.drawerState.isOpen ,
+            drawerContent = {
+                DrawerHeader()
+                DrawerBody(
+                    items = listOf(
+                        MenuItem(
+                            id = "Home",
+                            title = "Home",
+                            contentDescription = "Go to Home Screen",
+                            icon = Icons.Default.Home
+                        ),
+                        MenuItem(
+                            id = "Profile",
+                            title = "Profile",
+                            contentDescription = "Go to Profile Page",
+                            icon = Icons.Default.Person
+                        ),
+                        MenuItem(
+                            id = "Settings",
+                            title = "Settings",
+                            contentDescription = "Go to Settings",
+                            icon = Icons.Default.Delete
+                        ),
+                    ),
+                    onItemClick = {
+                        println("Clicked on ${it.title}")
+                    }
+                )
+            },
+content = {
+    Column() {
+        Text(
+            text = "Hello $name!",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(20.dp)
-                .width(1000.dp)
-            ,
+                .padding(10.dp)
+                .width(1000.dp),
             textAlign = TextAlign.Center
 
         )
+    }
+
+    Column() {
         // variable for simple date format.
         val sdf = SimpleDateFormat("'Today is:\n'dd-MM-yyyy")
 
@@ -93,18 +149,20 @@ fun Main(name: String) {
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(12.dp)
+                .padding(60.dp)
                 .fillMaxWidth()
                 .border(1.dp, Color.DarkGray, shape = RoundedCornerShape(40)),
             textAlign = TextAlign.Center
 
         )
-        Text(text = "Today's Workout:",
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(12.dp),
-            textDecoration = TextDecoration.Underline
-        )
+        Column() {
+            Text(text = "Today's Workout:",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(3.dp),
+                textDecoration = TextDecoration.Underline
+            )
+        }
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colors.primary)
@@ -181,11 +239,134 @@ fun Main(name: String) {
             )
 
     }
+
+
+},
+        )
+    }
 }
 
+@Composable
+fun Profile(name: String) {
+    Column(
+        modifier = Modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text(
+            text = "$name's Profile",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(20.dp)
+                .width(1000.dp),
+            textAlign = TextAlign.Center
+
+        )
+        Text(
+            text = "Height",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(20.dp)
+                .width(1000.dp),
+            textAlign = TextAlign.Center
+
+        )
+        Text(
+            text = "Weight",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(20.dp)
+                .width(1000.dp),
+            textAlign = TextAlign.Center
+
+        )
+        Text(
+            text = "BMI",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(20.dp)
+                .width(1000.dp),
+            textAlign = TextAlign.Center
+
+        )
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center) {
+
+            Text(text = "Goals",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .width(1000.dp)
+                ,
+                textAlign = TextAlign.Center
+
+            )
+
+            Text(text = "Workouts",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .width(1000.dp)
+                ,
+                textAlign = TextAlign.Center
+
+            )
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center) {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.primary)
+                    .size(200.dp, 250.dp)
+                    .drawBehind {
+                        val borderSize = 4.dp.toPx()
+                        val y = size.height - borderSize / 2
+                        drawLine(
+                            color = Color.DarkGray,
+                            start = Offset(0f, y),
+                            end = Offset(size.width, y),
+                            strokeWidth = borderSize
+                        )
+                    }
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(70)),
+
+                )
+
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.primary)
+                    .size(200.dp, 250.dp)
+                    .drawBehind {
+                        val borderSize = 4.dp.toPx()
+                        val y = size.height - borderSize / 2
+                        drawLine(
+                            color = Color.DarkGray,
+                            start = Offset(0f, y),
+                            end = Offset(size.width, y),
+                            strokeWidth = borderSize
+                        )
+                    }
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(70)),
+
+                )
+
+        }
 
 
 
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
