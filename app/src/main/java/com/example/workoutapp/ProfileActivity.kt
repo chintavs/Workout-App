@@ -20,6 +20,7 @@ class ProfileActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WorkoutAppTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -27,29 +28,24 @@ class ProfileActivity : ComponentActivity() {
                     Column {
                         val workouts = listOf(
                             Workout(
-                                name = "Chest and Triceps",
-                                exercises = listOf("Bench Press", "Incline Bench Press")
-                            ),
-                            Workout(
-                                name = "Back and Biceps",
-                                exercises = listOf("Deadlifts", "Pull-ups")
-                            ),
-                            Workout(
-                                name = "Leg Day",
-                                exercises = listOf("Squats", "Lunges")
+                                name = "",
+                                exercises = listOf("")
                             )
                         )
+
+                        val goals = listOf(
+                            Goal(
+                                name = "",
+                                progress = ""
+                            )
+                        )
+
                         UserProfile(
                             username = "Pratik",
                             height = "167cm",
                             weight = "57kg",
                             bmi = "21.8",
-                            goal1 = "Gain 10kg",
-                            goal1Progress = "30",
-                            goal2 = "Build Core Strength",
-                            goal2Progress = "60",
-                            goal3 = "Gain 3kg of muscle",
-                            goal3Progress = "20",
+                            goals = goals,
                             workouts = workouts
                         )
                     }
@@ -65,12 +61,7 @@ fun UserProfile(
     height: String,
     weight: String,
     bmi: String,
-    goal1: String,
-    goal1Progress: String,
-    goal2: String,
-    goal2Progress: String,
-    goal3: String,
-    goal3Progress: String,
+    goals: List<Goal>,
     workouts: List<Workout>,
     modifier: Modifier = Modifier,
 ) {
@@ -109,9 +100,9 @@ fun UserProfile(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        GoalItem(goalName = goal1, progress = goal1Progress)
-        GoalItem(goalName = goal2, progress = goal2Progress)
-        GoalItem(goalName = goal3, progress = goal3Progress)
+        for (goal in goals) {
+            GoalItem(goal)
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Workouts",
@@ -125,8 +116,9 @@ fun UserProfile(
     }
 }
 
+data class Goal(val name: String, val progress: String)
 @Composable
-fun GoalItem(goalName: String, progress: String) {
+fun GoalItem(goal : Goal) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -135,11 +127,11 @@ fun GoalItem(goalName: String, progress: String) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = goalName, fontWeight = FontWeight.Bold)
-            Text(text = progress)
+            Text(text = goal.name, fontWeight = FontWeight.Bold)
+            Text(text = goal.progress)
         }
         LinearProgressIndicator(
-            progress = progress.toFloat() / 100f,
+            progress = goal.progress.toFloat() / 100f,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -200,6 +192,20 @@ fun DefaultPreview() {
             exercises = listOf("Squats", "Leg Press", "Calf Raises")
         )
     )
+    val goals = listOf(
+        Goal(
+            name = "Gain 10kg",
+            progress = "30"
+        ),
+        Goal(
+            name = "Build Core Strength",
+            progress = "60"
+        ),
+        Goal(
+            name = "Gain 3kg of muscle",
+            progress = "99"
+        )
+    )
     WorkoutAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -212,12 +218,7 @@ fun DefaultPreview() {
                     height = "167cm",
                     weight = "57kg",
                     bmi = "21.8",
-                    goal1 = "Gain 10kg",
-                    goal1Progress = "30",
-                    goal2 = "Build Core Strength",
-                    goal2Progress = "60",
-                    goal3 = "Gain 3kg of muscle",
-                    goal3Progress = "20",
+                    goals = goals,
                     workouts = workouts
                 )
             }
