@@ -3,8 +3,11 @@ package com.example.workoutapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -138,5 +141,32 @@ fun GoalItem(goalName: String, progress: String) {
             progress = progress.toFloat() / 100f,
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+data class Workout(val name: String, val exercises: List<String>)
+@Composable
+fun WorkoutItem(workout: Workout) {
+    var expanded by remember { mutableStateOf(false) }
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }
+        ) {
+            Text(text = workout.name, fontWeight = FontWeight.Bold)
+            Icon(
+                if (expanded) Icons.Filled.ArrowDropDown else Icons.Filled.ArrowDropDown,
+                contentDescription = "",
+                tint = MaterialTheme.colors.secondary,
+            )
+        }
+        if (expanded) {
+            for (exercise in workout.exercises) {
+                ExerciseItem(exercise)
+            }
+        }
     }
 }
