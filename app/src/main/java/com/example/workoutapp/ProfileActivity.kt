@@ -170,3 +170,14 @@ fun WorkoutItem(workout: Workout) {
         }
     }
 }
+
+@Composable
+fun ExerciseItem(exercise: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = exercise)
+        // add any other relevant information about the exercise here
+    }
+}
