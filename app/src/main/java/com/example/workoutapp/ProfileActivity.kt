@@ -155,7 +155,7 @@ fun GoalItem(goal : Goal) {
     }
 }
 
-/* Composable function that displays a single workout item in a Column layout. The function takes in
+/* Composable function WorkoutItem that displays a single workout item in a Column layout. The function takes in
    a Workout data class object as a parameter, which contains the name of the workout and a list of exercises. */
 
 /* The workout's name is displayed using a Text composable function within a Row layout, which also
