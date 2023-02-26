@@ -55,6 +55,15 @@ class ProfileActivity : ComponentActivity() {
     }
 }
 
+/* Composable function UserProfile for displaying a user's profile information with goals and workouts in Kotlin. */
+
+/* The function takes in several parameters including username, height, weight, BMI, a list of goals,
+   a list of workouts, and a modifier to adjust the layout. */
+
+/* The user's profile information is displayed in a Column layout using various Text and Row composable
+   functions, and the user's goals and workouts are displayed using the GoalItem and WorkoutItem composable
+   functions, respectively.*/
+
 @Composable
 fun UserProfile(
     username: String,
@@ -116,6 +125,15 @@ fun UserProfile(
     }
 }
 
+/* Composable function GoalItem that displays a single goal item in a Column layout. The function takes in a
+   Goal data class object as a parameter, which contains the name of the goal and its progress as a percentage. */
+
+/* The goal's name and progress are displayed using two Text composable functions within a Row layout.
+   The progress is also displayed using a LinearProgressIndicator composable function.*/
+
+/* The progress parameter is converted to a Float and divided by 100 to display the progress as a value
+   between 0 and 1 for the LinearProgressIndicator. */
+
 data class Goal(val name: String, val progress: String)
 @Composable
 fun GoalItem(goal : Goal) {
@@ -136,6 +154,16 @@ fun GoalItem(goal : Goal) {
         )
     }
 }
+
+/* Composable function that displays a single workout item in a Column layout. The function takes in
+   a Workout data class object as a parameter, which contains the name of the workout and a list of exercises. */
+
+/* The workout's name is displayed using a Text composable function within a Row layout, which also
+   contains an Icon that toggles the display of the exercises when clicked. */
+
+/* If the user clicks on the row, the "expanded" variable will be set to true, and the ExerciseItem
+   composable function will be called to display the list of exercises. */
+
 
 data class Workout(val name: String, val exercises: List<String>)
 @Composable
@@ -164,6 +192,10 @@ fun WorkoutItem(workout: Workout) {
     }
 }
 
+/* The ExerciseItem composable function takes in a String parameter, which represents a single exercise
+   in the list of exercises. It displays the exercise using a Text composable function within a Row layout. */
+
+
 @Composable
 fun ExerciseItem(exercise: String) {
     Row(
@@ -171,9 +203,15 @@ fun ExerciseItem(exercise: String) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = exercise)
-        // add any other relevant information about the exercise here
     }
 }
+
+
+/*     This is a preview of the Workout App UI, displaying a sample user profile with their goals and workouts.
+   The preview uses the WorkoutAppTheme to apply the app's styling and displays a UserProfile composable,
+   which takes in the user's information and a list of goals and workouts. The sample data includes three
+   workouts and three goals, each with their name and progress. The preview showcases how the UserProfile
+   composable arranges the user's information and goals and workouts in a visually appealing manner. */
 
 @Preview(showBackground = true)
 @Composable
