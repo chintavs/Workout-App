@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 
@@ -179,5 +180,47 @@ fun ExerciseItem(exercise: String) {
     ) {
         Text(text = exercise)
         // add any other relevant information about the exercise here
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    val workouts = listOf(
+        Workout(
+            name = "Chest and Triceps",
+            exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+        ),
+        Workout(
+            name = "Back and Biceps",
+            exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+        ),
+        Workout(
+            name = "Leg Day",
+            exercises = listOf("Squats", "Leg Press", "Calf Raises")
+        )
+    )
+    WorkoutAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            Column {
+
+                UserProfile(
+                    username = "Pratik",
+                    height = "167cm",
+                    weight = "57kg",
+                    bmi = "21.8",
+                    goal1 = "Gain 10kg",
+                    goal1Progress = "30",
+                    goal2 = "Build Core Strength",
+                    goal2Progress = "60",
+                    goal3 = "Gain 3kg of muscle",
+                    goal3Progress = "20",
+                    workouts = workouts
+                )
+            }
+        }
     }
 }
