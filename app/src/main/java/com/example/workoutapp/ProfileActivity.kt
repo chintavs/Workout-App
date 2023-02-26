@@ -120,3 +120,23 @@ fun UserProfile(
         }
     }
 }
+
+@Composable
+fun GoalItem(goalName: String, progress: String) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = goalName, fontWeight = FontWeight.Bold)
+            Text(text = progress)
+        }
+        LinearProgressIndicator(
+            progress = progress.toFloat() / 100f,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
