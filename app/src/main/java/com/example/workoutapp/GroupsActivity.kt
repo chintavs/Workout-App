@@ -38,6 +38,7 @@ fun GroupGreeting(name: String) {
         Text(
             text = "$name's Groups"
         )
+        //Sample Button 1
         Button(
             onClick = {
                 Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
@@ -46,6 +47,7 @@ fun GroupGreeting(name: String) {
                 Text(text = "Group 1")
             }
         )
+        //Sample Button 2
         Button(
             onClick = {
                 Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
