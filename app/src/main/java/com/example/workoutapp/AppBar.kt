@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
 @Composable
+/* navigation and drawer setup. Navigation between pages is WIP */
 fun AppBar(
     onNavigationIconClick: () -> Unit
 ) {

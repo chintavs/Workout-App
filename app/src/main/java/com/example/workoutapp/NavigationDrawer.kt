@@ -26,6 +26,7 @@ fun DrawerHeader() {
 }
 
 @Composable
+//Drawer body creation using a lazy column with rows
 fun DrawerBody(
     items: List<MenuItem>,
     modifier: Modifier = Modifier,

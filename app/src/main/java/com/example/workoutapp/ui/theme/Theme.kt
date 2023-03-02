@@ -30,6 +30,7 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun WorkoutAppTheme(
+    /* Choose them if phone is set to darkmode */
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
