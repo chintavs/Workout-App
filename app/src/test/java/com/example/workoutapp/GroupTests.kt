@@ -1,7 +1,8 @@
 package com.example.workoutapp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.workoutapp.dto.Groups
+import com.example.workoutapp.dto.Group
+import com.example.workoutapp.service.GroupService
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
@@ -15,7 +16,7 @@ class GroupTests {
     var rule: TestRule = InstantTaskExecutorRule()
 
     lateinit var groupService : GroupService
-    var allGroups : List<Groups>? = ArrayList<Groups>()
+    var allGroups : List<Group>? = ArrayList<Group>()
 
     @Test
     fun `Given group data are available when I search for Cool Group then I should receive Cool Group`() = runTest{
@@ -31,7 +32,7 @@ class GroupTests {
 
     //When
     private suspend fun whenGroupDataAreReadAndParsed() {
-        allGroups = groupSerivce.fetchGroup()
+        allGroups = groupService.fetchGroup()
     }
 
     //Then

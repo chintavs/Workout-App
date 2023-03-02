@@ -1,6 +1,6 @@
 package com.example.workoutapp.dto
 
-data class Groups(var groupName: String, var groupMembers: Array<User>){
+data class Group(var groupName: String, var groupMembers: Array<User>){
 
     //toString override
     override fun toString(): String {
