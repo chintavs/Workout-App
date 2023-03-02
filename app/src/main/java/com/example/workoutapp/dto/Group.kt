@@ -8,6 +8,9 @@ data class Group(var groupName: String, var groupMembers: Array<User>){
         for (x in groupMembers){
             groupMembersStr += "$x\n"
         }
+        //Returns:
+        //Group Name: $groupName
+        //Group Members: $groupMembersStr
         return "Group Name: $groupName\nGroup Members: $groupMembersStr"
     }
 }
