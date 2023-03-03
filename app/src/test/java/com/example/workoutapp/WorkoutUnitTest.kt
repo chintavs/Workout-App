@@ -1,17 +1,15 @@
 package com.example.workoutapp
 
 import androidx.lifecycle.Observer
+import com.example.workoutapp.service.WorkoutService
 import org.junit.Test
 
 import org.junit.Assert.*
 
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
@@ -20,8 +18,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 
 import org.junit.Before
-import org.junit.Rule
-import org.junit.rules.TestRule
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -34,7 +30,7 @@ import java.util.concurrent.TimeUnit
 class WorkoutUnitTest {
 
     lateinit var gam: GroupsActivity
-    lateinit var workoutService: WorkoutService()
+    lateinit var workoutService: WorkoutService
     var allWorkouts: List<Workout>? = ArrayList<Workout>()
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
@@ -57,7 +53,7 @@ class WorkoutUnitTest {
     //This test makes sure the dto is gathering the info from the json service we are using
     @Test
     fun `Given a dto when name is Barbell Curl, and level is beginner`() {
-        var workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
+        val workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
             "Example Workout Instructions.", "strength")
         assertTrue(workout.name.equals("Barbell Curl"))
         assertTrue(workout.force.equals("pull"))
@@ -72,7 +68,7 @@ class WorkoutUnitTest {
     //This test checks if the workout list is compiling the information correctly
     @Test
     fun `Given a workout dto when name is Barbell Curl force is pull etc`() {
-        var workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
+        val workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
             "Example Workout Instructions.", "strength")
         assertTrue(workout.ToString().equals("Barbell Curl pull beginner isolation barbell biceps forearms Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position. While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move. Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard. Slowly begin to bring the bar back to starting position as your breathe in. Repeat for the recommended amount of repetitions. strength"))
     }
@@ -117,8 +113,8 @@ class WorkoutUnitTest {
     private fun whenJSONDataAreReadAndParsed() {
         gam.fetchWorkouts()
     }
-    private fun thenResultsShouldContainBelize() {
-        val latch = CountDownLatch(1);
+    private fun thenResultsShouldContainBarbellCurl() {
+        val latch = CountDownLatch(1)
         val observer = object : Observer<List<Workout>> {
             override fun onChanged(t: List<Workout>?) {
                 allWorkouts = t
