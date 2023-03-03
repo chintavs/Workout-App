@@ -58,11 +58,7 @@ class WorkoutUnitTest {
     @Test
     fun `Given a dto when name is Barbell Curl, and level is beginner`() {
         var workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
-            "Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position.",
-            "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
-            "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
-            "Slowly begin to bring the bar back to starting position as your breathe in.",
-            "Repeat for the recommended amount of repetitions.", "strength")
+            "Example Workout Instructions.", "strength")
         assertTrue(workout.name.equals("Barbell Curl"))
         assertTrue(workout.force.equals("pull"))
         assertTrue(workout.level.equals("beginner"))
@@ -70,22 +66,14 @@ class WorkoutUnitTest {
         assertTrue(workout.equipment.equals("barbell"))
         assertTrue(workout.primaryMuscles.equals("biceps"))
         assertTrue(workout.secondaryMuscles.equals("forearms"))
-        assertTrue(workout.instructions.equals("Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position.",
-            "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
-            "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
-            "Slowly begin to bring the bar back to starting position as your breathe in.",
-            "Repeat for the recommended amount of repetitions."))
+        assertTrue(workout.instructions.equals("Example Workout Instructions."))
         assertTrue(workout.category.equals("strength"))
     }
     //This test checks if the workout list is compiling the information correctly
     @Test
     fun `Given a workout dto when name is Barbell Curl force is pull etc`() {
         var workout = Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
-            "Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position.",
-            "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
-            "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
-            "Slowly begin to bring the bar back to starting position as your breathe in.",
-            "Repeat for the recommended amount of repetitions.", "strength")
+            "Example Workout Instructions.", "strength")
         assertTrue(workout.ToString().equals("Barbell Curl pull beginner isolation barbell biceps forearms Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position. While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move. Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard. Slowly begin to bring the bar back to starting position as your breathe in. Repeat for the recommended amount of repetitions. strength"))
     }
     //The json service we are using has split json files we need to parse so this will likely change as
@@ -115,24 +103,11 @@ class WorkoutUnitTest {
     private fun givenViewModelIsInitializedWithMockData() {
         val workouts = ArrayList<Workout>()
         workouts.add(Workout("3/4 Sit-Up", "pull", "beginner", "compound", "body only", "abdominals", "[]",
-            "Lie down on the floor and secure your feet. Your legs should be bent at the knees.",
-            "Place your hands behind or to the side of your head. You will begin with your back on the ground. This will be your starting position.",
-            "Flex your hips and spine to raise your torso toward your knees.",
-            "At the top of the contraction your torso should be perpendicular to the ground. Reverse the motion, going only Â¾ of the way down.",
-            "Repeat for the recommended amount of repetitions."))
+            "Example Workout Instructions."))
         workouts.add(Workout("Barbell Curl", "pull", "beginner", "isolation", "barbell", "biceps", "forearms",
-            "Stand up with your torso upright while holding a barbell at a shoulder-width grip. The palm of your hands should be facing forward and the elbows should be close to the torso. This will be your starting position.",
-            "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out. Tip: Only the forearms should move.",
-            "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
-            "Slowly begin to bring the bar back to starting position as your breathe in.",
-            "Repeat for the recommended amount of repetitions.", "strength"))
+            "Example Workout Instructions.", "strength"))
         workouts.add(Workout("Ab Crunch Machine", "pull", "intermediate", "isolation", "machine",
-            "[abdominals]", " ",
-            "Select a light resistance and sit down on the ab machine placing your feet under the pads provided and grabbing the top handles. Your arms should be bent at a 90 degree angle as you rest the triceps on the pads provided. This will be your starting position.",
-            "At the same time, begin to lift the legs up as you crunch your upper torso. Breathe out as you perform this movement. Tip: Be sure to use a slow and controlled motion. Concentrate on using your abs to move the weight while relaxing your legs and feet.",
-            "After a second pause, slowly return to the starting position as you breathe in.",
-            "Repeat the movement for the prescribed amount of repetitions.",
-             "strength"))
+            "[abdominals]", " ", "Example Workout Instructions.", "strength"))
 
         coEvery {workoutService.fetchWorkouts()} returns workouts
 
@@ -154,13 +129,9 @@ class WorkoutUnitTest {
         gam.workouts.observeForever(observer)
 
         latch.await(1, TimeUnit.SECONDS)
-        assertNotNull(allWorkouts
+        assertNotNull(allWorkouts)
         assertTrue(allWorkouts!!.contains(Workout("3/4 Sit-Up", "pull", "beginner", "compound", "body only", "abdominals", "[]",
-            "Lie down on the floor and secure your feet. Your legs should be bent at the knees.",
-            "Place your hands behind or to the side of your head. You will begin with your back on the ground. This will be your starting position.",
-            "Flex your hips and spine to raise your torso toward your knees.",
-            "At the top of the contraction your torso should be perpendicular to the ground. Reverse the motion, going only Â¾ of the way down.",
-            "Repeat for the recommended amount of repetitions.")))
+            "Example Workout Instructions.")))
 
     }
 }
