@@ -16,7 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 
+const val PADDING_16 = 16
+const val PADDING_8 = 8
 class ProfileActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -78,14 +81,14 @@ fun UserProfile(
 ) {
     Column(
         modifier = modifier
-            .padding(16.dp)
+            .padding(PADDING_16.dp)
             .fillMaxWidth()
     ) {
         Text(
             text = "$username's Profile",
             style = MaterialTheme.typography.h4,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -109,7 +112,7 @@ fun UserProfile(
             text = stringResource(R.string.goals),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
         for (goal in goals) {
             GoalItem(goal)
@@ -119,7 +122,7 @@ fun UserProfile(
             text = stringResource(R.string.workouts),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
     }
 }
@@ -169,7 +172,7 @@ data class Workout(val name: String, val exercises: List<String>)
 fun WorkoutItem(workout: Workout) {
     var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.padding(16.dp, 0.dp)
+        modifier = Modifier.padding(PADDING_16.dp, 0.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
