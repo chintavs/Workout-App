@@ -218,7 +218,7 @@ fun ExerciseItem(exercise: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    var workouts = listOf(
+    val workouts = listOf(
         Workout(
             name = "Chest and Triceps",
             exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
@@ -232,7 +232,7 @@ fun DefaultPreview() {
             exercises = listOf("Squats", "Leg Press", "Calf Raises")
         )
     )
-    var goals = listOf(
+    val goals = listOf(
         Goal(
             name = "Gain 10kg",
             progress = "30"
