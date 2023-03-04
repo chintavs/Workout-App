@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WorkoutApp</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="bmi">BMI</string>
+    <string name="goals">Goals</string>
+    <string name="workouts">Workouts</string>
 </resources>

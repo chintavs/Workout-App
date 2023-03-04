@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,8 +47,10 @@ class ProfileActivity : ComponentActivity() {
                             weight = "57kg",
                             bmi = "21.8",
                             goals = goals,
-                            workouts = workouts
                         )
+                        for (workout in workouts) {
+                            WorkoutItem(workout)
+                        }
                     }
                 }
             }
@@ -71,7 +74,6 @@ fun UserProfile(
     weight: String,
     bmi: String,
     goals: List<Goal>,
-    workouts: List<Workout>,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -90,21 +92,21 @@ fun UserProfile(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Text(text = "Height", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.height), fontWeight = FontWeight.Bold)
                 Text(text = height)
             }
             Column {
-                Text(text = "Weight", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.weight), fontWeight = FontWeight.Bold)
                 Text(text = weight)
             }
             Column {
-                Text(text = "BMI", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.bmi), fontWeight = FontWeight.Bold)
                 Text(text = bmi)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Goals",
+            text = stringResource(R.string.goals),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -114,14 +116,11 @@ fun UserProfile(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Workouts",
+            text = stringResource(R.string.workouts),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        for (workout in workouts) {
-            WorkoutItem(workout)
-        }
     }
 }
 
@@ -175,7 +174,9 @@ fun WorkoutItem(workout: Workout) {
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
         ) {
             Text(text = workout.name, fontWeight = FontWeight.Bold)
             Icon(
@@ -216,7 +217,7 @@ fun ExerciseItem(exercise: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    val workouts = listOf(
+    var workouts = listOf(
         Workout(
             name = "Chest and Triceps",
             exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
@@ -230,7 +231,7 @@ fun DefaultPreview() {
             exercises = listOf("Squats", "Leg Press", "Calf Raises")
         )
     )
-    val goals = listOf(
+    var goals = listOf(
         Goal(
             name = "Gain 10kg",
             progress = "30"
@@ -257,8 +258,10 @@ fun DefaultPreview() {
                     weight = "57kg",
                     bmi = "21.8",
                     goals = goals,
-                    workouts = workouts
                 )
+                for (workout in workouts) {
+                    WorkoutItem(workout)
+                }
             }
         }
     }
