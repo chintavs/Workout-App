@@ -32,6 +32,9 @@ class WorkoutActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 )
                 {
+                    /* Creates a a drop down list containing all the days of the week
+                    * Each day contains a list of exercises done */
+
                     MyWorkout(
                         sections = listOf(
                             CollapsableSection(
