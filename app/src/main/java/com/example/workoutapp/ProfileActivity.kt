@@ -169,7 +169,8 @@ data class Workout(val name: String, val exercises: List<String>)
 fun WorkoutItem(workout: Workout) {
     var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.padding(16.dp, 0.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
