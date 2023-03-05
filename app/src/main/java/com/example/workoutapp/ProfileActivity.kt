@@ -10,12 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 
+const val PADDING_16 = 16
+const val PADDING_8 = 8
 class ProfileActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,8 +50,10 @@ class ProfileActivity : ComponentActivity() {
                             weight = "57kg",
                             bmi = "21.8",
                             goals = goals,
-                            workouts = workouts
                         )
+                        for (workout in workouts) {
+                            WorkoutItem(workout)
+                        }
                     }
                 }
             }
@@ -71,57 +77,53 @@ fun UserProfile(
     weight: String,
     bmi: String,
     goals: List<Goal>,
-    workouts: List<Workout>,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .padding(16.dp)
+            .padding(PADDING_16.dp)
             .fillMaxWidth()
     ) {
         Text(
             text = "$username's Profile",
             style = MaterialTheme.typography.h4,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Text(text = "Height", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.height), fontWeight = FontWeight.Bold)
                 Text(text = height)
             }
             Column {
-                Text(text = "Weight", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.weight), fontWeight = FontWeight.Bold)
                 Text(text = weight)
             }
             Column {
-                Text(text = "BMI", fontWeight = FontWeight.Bold)
+                Text(text = stringResource(R.string.bmi), fontWeight = FontWeight.Bold)
                 Text(text = bmi)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Goals",
+            text = stringResource(R.string.goals),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
         for (goal in goals) {
             GoalItem(goal)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Workouts",
+            text = stringResource(R.string.workouts),
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = PADDING_8.dp)
         )
-        for (workout in workouts) {
-            WorkoutItem(workout)
-        }
     }
 }
 
@@ -170,12 +172,15 @@ data class Workout(val name: String, val exercises: List<String>)
 fun WorkoutItem(workout: Workout) {
     var expanded by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.padding(PADDING_16.dp, 0.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
         ) {
             Text(text = workout.name, fontWeight = FontWeight.Bold)
             Icon(
@@ -257,8 +262,10 @@ fun DefaultPreview() {
                     weight = "57kg",
                     bmi = "21.8",
                     goals = goals,
-                    workouts = workouts
                 )
+                for (workout in workouts) {
+                    WorkoutItem(workout)
+                }
             }
         }
     }
