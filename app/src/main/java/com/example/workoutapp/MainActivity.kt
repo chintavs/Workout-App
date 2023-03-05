@@ -1,5 +1,6 @@
 package com.example.workoutapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -34,12 +35,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,9 +44,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             WorkoutAppTheme {
-
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -65,7 +58,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun Main(name: String?) {
 
@@ -77,16 +69,13 @@ fun Main(name: String?) {
         Scaffold(
 
             scaffoldState = scaffoldState,
-
             topBar = {
 
                 AppBar {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-
                 }
-
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen ,
             drawerContent = {
@@ -141,7 +130,8 @@ content = {
         // date format in it.
         val currentDateAndTime = sdf.format(Date())
 
-        Text(text = currentDateAndTime,
+        Text(
+            text = currentDateAndTime,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -152,7 +142,8 @@ content = {
 
         )
         Column() {
-            Text(text = "Today's Workout:",
+            Text(
+                text = "Today's Workout:",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(3.dp),
@@ -182,7 +173,6 @@ content = {
             horizontalArrangement = Arrangement.Center) {
             Button( onClick = {},
                 modifier = Modifier.padding(12.dp),
-
                 shape = RoundedCornerShape(70)
 
             ) { Text(text = "My Workout") }
@@ -194,7 +184,8 @@ content = {
             ) { Text(text = "My Groups") }
 
         }
-        Text(text = "My Progress",
+        Text(
+            text = "My Progress",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -204,7 +195,8 @@ content = {
             textAlign = TextAlign.Center
 
         )
-        Text(text = "Goals",
+        Text(
+            text = "Goals",
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             textDecoration = TextDecoration.Underline,
@@ -244,9 +236,16 @@ content = {
 
 
 
+
+@Preview(name="Light Mode", showBackground=true)
+@Preview(uiMode= Configuration.UI_MODE_NIGHT_YES, showBackground = true, name="Dark Mode")
 @Composable
 fun DefaultPreview() {
     WorkoutAppTheme {
-        Main("Android")
+        // A surface container using the 'background' color from the theme
+        Surface(color = MaterialTheme.colors.background,
+            modifier = Modifier.fillMaxWidth()) {
+            Main("Android")
+        }
     }
 }

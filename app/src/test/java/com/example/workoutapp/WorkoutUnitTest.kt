@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 import androidx.lifecycle.Observer
+import com.example.workoutapp.service.WorkoutService
 import org.junit.Test
 
 import org.junit.Assert.*

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WorkoutApp</string>
+    <string name="LoadingGroup">Loading group...</string>
+    <string name="Group1">Group 1</string>
+    <string name="group2">Group 2</string>
 </resources>
