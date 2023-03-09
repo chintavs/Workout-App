@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
 fun Main(name: String?) {
 
