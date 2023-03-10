@@ -29,7 +29,6 @@ class GroupsActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun GroupGreeting(name: String) {
     val context = LocalContext.current
@@ -60,11 +59,3 @@ fun GroupGreeting(name: String) {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WorkoutAppTheme {
-        // "Colton" will be replaced with the user's name
-        GroupGreeting("Colton")
-    }
-}
