@@ -65,6 +65,7 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 
@@ -77,9 +78,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.0'
     androidTestImplementation 'androidx.navigation:navigation-testing:2.3.0'
     implementation 'androidx.navigation:navigation-compose:2.4.0'
-
-
-
-
 
 }
