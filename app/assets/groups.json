@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "groupName": "Dev Group",
+      "groupMembers": [
+        "Colton Dalton",
+        "Sean Arthur",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Tara Poudyel"
+      ]
+    },
+    {
+      "groupName": "Cool Group",
+      "groupMembers": [
+        "John Cena",
+        "Dwayne Johnson",
+        "Hulk Hogan",
+        "Ric Flair"
+      ]
+    },
+    {
+      "groupName": "Professors",
+      "groupMembers": [
+        "Brandon Jones",
+        "Dyllon Dekok",
+        "Tom Wulf",
+        "Bander Henderson"
+      ]
+    }
+  ]
+}
