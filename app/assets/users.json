@@ -1,0 +1,112 @@
+{
+  "users": [
+    {
+      "firstName": "Colton",
+      "lastName": "Dalton",
+      "username": "daltonco",
+      "calorieGoal": "500",
+      "workoutsCompleted": "5",
+      "friendList": [
+        "Sean Arthur",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Tara Poudyel"
+      ],
+      "workoutDate": "3/9/2023",
+      "height": 69,
+      "weight": 160,
+      "bmi": "BMI"
+    },
+    {
+      "firstName": "Sean",
+      "lastName": "Arthur",
+      "username": "arthursr",
+      "calorieGoal": "505",
+      "workoutsCompleted": "4",
+      "friendList": [
+        "Colton Dalton",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Tara Poudyel"
+      ],
+      "workoutDate": "3/8/2023",
+      "height": 68,
+      "weight": 161,
+      "bmi": "BMI"
+    },
+    {
+      "firstName": "Pratik",
+      "lastName": "Chaudhari",
+      "username": "chaudhpr",
+      "calorieGoal": "510",
+      "workoutsCompleted": "6",
+      "friendList": [
+        "Sean Arthur",
+        "Colton Dalton",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Tara Poudyel"
+      ],
+      "workoutDate": "3/9/2023",
+      "height": 70,
+      "weight": 150,
+      "bmi": "BMI"
+    },
+    {
+      "firstName": "Vishvak",
+      "lastName": "Chintalapalli",
+      "username": "chintavs",
+      "calorieGoal": "800",
+      "workoutsCompleted": "580",
+      "friendList": [
+        "Sean Arthur",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Tara Poudyel"
+      ],
+      "workoutDate": "3/9/2023",
+      "height": 80,
+      "weight": 200,
+      "bmi": "BMI"
+    },
+    {
+      "firstName": "William",
+      "lastName": "Koonce",
+      "username": "kooncewc",
+      "calorieGoal": "1000",
+      "workoutsCompleted": "9999",
+      "friendList": [
+        "Sean Arthur",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "Colton Dalton",
+        "Tara Poudyel"
+      ],
+      "workoutDate": "3/9/2023",
+      "height": 80,
+      "weight": 250,
+      "bmi": "BMI"
+    },
+    {
+      "firstName": "Tara",
+      "lastName": "Poudyel",
+      "username": "poudyeta",
+      "calorieGoal": "3145",
+      "workoutsCompleted": "3122",
+      "friendList": [
+        "Sean Arthur",
+        "Pratik Chaudhari",
+        "Vishvak Chintalapalli",
+        "William Koonce",
+        "Colton Dalton"
+      ],
+      "workoutDate": "3/9/2023",
+      "height": 60,
+      "weight": 150,
+      "bmi": "BMI"
+    }
+  ]
+}
