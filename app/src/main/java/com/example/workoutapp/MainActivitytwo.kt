@@ -240,7 +240,7 @@ content = {
 
 
 @Composable
-fun DefaultPreview() {
+fun DefaultMainPreview() {
     WorkoutAppTheme {
         Main("Android")
     }

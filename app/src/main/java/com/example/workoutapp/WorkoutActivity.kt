@@ -115,7 +115,7 @@ fun MyWorkout(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun DefaultWorkoutPreview() {
     WorkoutAppTheme {
         MyWorkout(
             sections = listOf(
