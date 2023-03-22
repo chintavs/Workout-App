@@ -61,7 +61,7 @@ class WorkoutUnitTest {
             "Continue the movement until your biceps are fully contracted and the bar is at shoulder level. Hold the contracted position for a second and squeeze the biceps hard.",
             "Slowly begin to bring the bar back to starting position as your breathe in.",
             "Repeat for the recommended amount of repetitions."], "strength")
-        assertTrue(workout.name.equals("Barbell Curl"))
+        assertTrue(workout.workoutName.equals("Barbell Curl"))
         assertTrue(workout.force.equals("pull"))
         assertTrue(workout.level.equals("beginner"))
         assertTrue(workout.mechanic.equals("isolation"))

@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
@@ -29,8 +31,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.dto.WorkoutRec
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,7 +48,39 @@ import java.util.*
 
 class MainActivity : ComponentActivity() {
 
+
+    var userWorkout : MutableLiveData<List<WorkoutRec>> = MutableLiveData<List<WorkoutRec>>()
+
     private lateinit var firestore : FirebaseFirestore
+
+    init{
+        firestore = FirebaseFirestore.getInstance()
+        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
+        listentouserWorkout()
+    }
+
+    private fun listentouserWorkout() {
+        firestore.collection("userWorkout").addSnapshotListener{
+            // error handling
+            snapshot, e->
+            if (e != null) {
+                Log.w("Listen Failed",e)
+                return@addSnapshotListener
+            }
+            snapshot?.let{
+                val alluserWorkout = ArrayList<WorkoutRec>()
+                val documents = snapshot.documents
+                documents.forEach{
+                    val userWorkouts = it.toObject(userWorkout::class.java)
+                    userWorkouts?.let{
+                        alluserWorkout.add(it!!)
+                    }
+
+                }
+                userWorkout.value = alluserWorkout
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +99,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun <E> MutableList<E>.add(element: MutableLiveData<List<E>>) {
+
 }
 
 
@@ -107,6 +152,13 @@ fun Main(name: String?) {
                             contentDescription = "Go to Settings",
                             icon = Icons.Default.Delete
                         ),
+                        MenuItem(
+                            id = "Login",
+                            title = "Login",
+                            contentDescription = "Login",
+                            icon = Icons.Default.Lock
+                        ),
+
                     ),
                     onItemClick = {
                         println("Clicked on ${it.title}")
@@ -171,7 +223,10 @@ content = {
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(70)),
 
+
             )
+
+
         Row(modifier = Modifier
             .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center) {
@@ -239,6 +294,7 @@ content = {
 
 
 
+@Preview(showBackground = true)
 @Composable
 fun DefaultMainPreview() {
     WorkoutAppTheme {
