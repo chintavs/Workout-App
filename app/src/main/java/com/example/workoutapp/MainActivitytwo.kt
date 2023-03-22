@@ -36,7 +36,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
 class MainActivity : ComponentActivity() {
+
+    private lateinit var firestore : FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
