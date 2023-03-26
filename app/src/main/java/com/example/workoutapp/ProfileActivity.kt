@@ -153,6 +153,11 @@ fun UserProfile(
     }
 }
 
+
+/* A composable function that displays a profile photo.
+@param painter The painter for the image.
+@param modifier Optional modifier for the composable.. */
+
 @Composable
 fun ProfilePhoto(
     painter: Painter?,
