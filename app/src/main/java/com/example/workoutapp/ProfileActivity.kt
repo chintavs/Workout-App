@@ -4,13 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +32,7 @@ class ProfileActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column {
+//                        val profilePhoto = painterResource(id = R.drawable.profile_picture)
                         val workouts = listOf(
                             Workout(
                                 name = "",
@@ -47,6 +52,7 @@ class ProfileActivity : ComponentActivity() {
                             height = "167cm",
                             weight = "57kg",
                             bmi = "21.8",
+                            profilePhoto = null,
                             goals = goals,
                             workouts = workouts
                         )
@@ -56,6 +62,7 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 }
+
 
 /* Composable function UserProfile for displaying a user's profile information with goals and workouts in Kotlin. */
 
@@ -74,6 +81,7 @@ fun UserProfile(
     bmi: String,
     goals: List<Goal>,
     workouts: List<Workout>,
+    profilePhoto: Painter?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -81,12 +89,30 @@ fun UserProfile(
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        Text(
-            text = "$username's Profile",
-            style = MaterialTheme.typography.h4,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfilePhoto(
+                painter = profilePhoto,
+                modifier = Modifier
+                    .size(128.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 2.dp,
+                        color = MaterialTheme.colors.secondary,
+                        shape = CircleShape
+                    )
+            )
+            Text(
+                text = "$username's Profile",
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -272,6 +298,7 @@ fun DefaultPreview() {
                     height = "167cm",
                     weight = "57kg",
                     bmi = "21.8",
+                    profilePhoto = null,
                     goals = goals,
                     workouts = workouts
                 )
