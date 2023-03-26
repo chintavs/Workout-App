@@ -75,11 +75,32 @@ const val MaterialIconDimension = 24f
 
 @Composable
 fun MyWorkout(
-    sections: List<CollapsableSection>,
-    modifier: Modifier = Modifier
+    sections: List<CollapsableSection>
 ) {
     val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
-    LazyColumn(modifier) {
+
+    Column (
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "My Workouts",
+            style = MaterialTheme.typography.h4,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .padding(75.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        userScrollEnabled = true
+    ) {
         sections.forEachIndexed { i, dataItem ->
             val collapsed = collapsedState[i]
             item(key = "header_$i") {
@@ -181,29 +202,29 @@ fun MyWorkout(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultWorkoutPreview() {
+fun WorkoutPreview() {
     WorkoutAppTheme {
         MyWorkout(
             sections = listOf(
                 CollapsableSection(
                     title = "Monday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio")
+                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                 ),
                 CollapsableSection(
                     title = "Tuesday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio")
+                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                 ),
                 CollapsableSection(
                     title = "Wednesday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio")
+                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                 ),
                 CollapsableSection(
                     title = "Thursday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio")
+                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                 ),
                 CollapsableSection(
                     title = "Friday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio")
+                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                 ),
             )
         )

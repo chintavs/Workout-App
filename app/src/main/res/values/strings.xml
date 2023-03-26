@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WorkoutApp</string>
     <string name="title_activity_my_workouts">MyWorkouts</string>
+    <string name="title_activity_record">RecordActivity</string>
+    <string name="workoutName">Workout Name</string>
+    <string name="Sets">Sets</string>
+    <string name="Reps">Reps</string>
+    <string name="Time">Time</string>
 </resources>

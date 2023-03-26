@@ -285,6 +285,7 @@ fun ExerciseItem(exercise: String) {
 
 @Preview(showBackground = true)
 @Composable
+
 fun DefaultProfilePreview() {
     val workouts = listOf(
         Workout(
