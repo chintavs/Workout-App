@@ -3,6 +3,7 @@ package com.example.workoutapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -122,6 +124,20 @@ fun UserProfile(
         for (workout in workouts) {
             WorkoutItem(workout)
         }
+    }
+}
+
+@Composable
+fun ProfilePhoto(
+    painter: Painter?,
+    modifier: Modifier = Modifier,
+) {
+    painter?.let {
+        Image(
+            painter = it,
+            contentDescription = "Profile Picture",
+            modifier = modifier
+        )
     }
 }
 
