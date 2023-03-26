@@ -1,9 +1,7 @@
 package com.example.workoutapp.dto
 
-import java.util.Date
-
 //ADD @SERIALIZEDNAME ONCE JSON IS COMPILED
-data class User(var firstName: String, var lastName: String, var username: String, var calorieGoal: String, var workoutsCompleted: String, var friendList: Array<String>, var workoutDate: String, var height: Double, var weight: Double, var bmi: String){
+data class User(val uid: String = "", var displayName: String?, var firstName: String, var lastName: String, var calorieGoal: String, var workoutsCompleted: String, var friendList: Array<String>, var workoutDate: String, var height: String, var weight: String, var bmi: String){
 
     var fullName: String = "$firstName $lastName"
 
@@ -18,6 +16,6 @@ data class User(var firstName: String, var lastName: String, var username: Strin
         //Height: $height
         //Weight: $weight
         //BMI: $bmi
-        return "Name: $firstName $lastName\nUsername: $username\nCalorie Goal: $calorieGoal\nWorkouts Completed: $workoutsCompleted\nHeight (inches): $height\nWeight (lbs): $weight\nBMI: $bmi"
+        return "Name: $firstName $lastName\nUsername: $displayName\nCalorie Goal: $calorieGoal\nWorkouts Completed: $workoutsCompleted\nHeight (inches): $height\nWeight (lbs): $weight\nBMI: $bmi"
     }
 }
