@@ -75,6 +75,19 @@ fun MyWorkout(
     modifier: Modifier = Modifier
 ) {
     val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "Workouts",
+            style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+    }
+
     LazyColumn(modifier) {
         sections.forEachIndexed { i, dataItem ->
             val collapsed = collapsedState[i]
@@ -115,7 +128,7 @@ fun MyWorkout(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun WorkoutPreview() {
     WorkoutAppTheme {
         MyWorkout(
             sections = listOf(

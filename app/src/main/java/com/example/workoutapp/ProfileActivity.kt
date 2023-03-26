@@ -215,7 +215,7 @@ fun ExerciseItem(exercise: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun ProfilePreview() {
     val workouts = listOf(
         Workout(
             name = "Chest and Triceps",
