@@ -316,7 +316,8 @@ class MainActivity : ComponentActivity() {
 
     fun signIn() {
         val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build()
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
         )
         val signinIntent = AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers)
