@@ -11,13 +11,18 @@ import retrofit2.awaitResponse
 
 class WorkoutService {
 
-
-
-    suspend fun fetchWorkouts() : List<WorkoutRec>? {
-        return withContext(Dispatchers.IO) {
-            val service = RetrofitClientInstance.retrofitInstance?.create(IExerciseDAO::class.java)
-            val plants = async { service?.getAllExercises("3_4_Sit-Up") }
-            return@withContext plants.await()?.awaitResponse()?.body()
+    fun fetchWorkouts(args: Array<String>) {
+        val arr = arrayOf("3_4_Sit-Up", "90_90_Hamstring", "Ab_Crunch_Machine", "Ab_Roller", "Adductor")
+        arr.forEach {
+            suspend fun nested() : List<WorkoutRec>? {
+                return withContext(Dispatchers.IO) {
+                    val service = RetrofitClientInstance.retrofitInstance?.create(IExerciseDAO::class.java)
+                    val plants = async { service?.getAllExercises(it) }
+                    return@withContext plants.await()?.awaitResponse()?.body()
+                }
         }
+    }
+
+
     }
 }

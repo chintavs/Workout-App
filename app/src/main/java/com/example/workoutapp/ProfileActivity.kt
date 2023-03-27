@@ -7,13 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
+import com.example.workoutapp.MainActivity
+import kotlinx.coroutines.launch
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,54 +76,122 @@ fun UserProfile(
     workouts: List<Workout>,
     modifier: Modifier = Modifier,
 ) {
+
+
+
     Column(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = "$username's Profile",
-            style = MaterialTheme.typography.h4,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Column {
-                Text(text = "Height", fontWeight = FontWeight.Bold)
-                Text(text = height)
+        modifier = Modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ){
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+        Scaffold(
+
+            scaffoldState = scaffoldState,
+
+            topBar = {
+
+                AppBar {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+
+                }
+
+            },
+            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+            drawerContent = {
+                DrawerHeader()
+                DrawerBody(
+                    items = listOf(
+                        MenuItem(
+                            id = "Home",
+                            title = "Home",
+                            contentDescription = "Go to Home Screen",
+                            icon = Icons.Default.Home
+                        ),
+                        MenuItem(
+                            id = "Profile",
+                            title = "Profile",
+                            contentDescription = "Go to Profile Page",
+                            icon = Icons.Default.Person
+                        ),
+                        MenuItem(
+                            id = "Settings",
+                            title = "Settings",
+                            contentDescription = "Go to Settings",
+                            icon = Icons.Default.Delete
+                        ),
+
+                        MenuItem(
+                            id = "Login",
+                            title = "Login",
+                            contentDescription = "Login",
+                            icon = Icons.Default.Lock
+                        ),
+                    ),
+                    onItemClick = {
+
+                    }
+                )
+
+
+            },
+            content = {
+                Column(
+                    modifier = modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "$username's Profile",
+                        style = MaterialTheme.typography.h4,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column {
+                            Text(text = "Height", fontWeight = FontWeight.Bold)
+                            Text(text = height)
+                        }
+                        Column {
+                            Text(text = "Weight", fontWeight = FontWeight.Bold)
+                            Text(text = weight)
+                        }
+                        Column {
+                            Text(text = "BMI", fontWeight = FontWeight.Bold)
+                            Text(text = bmi)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Goals",
+                        style = MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    for (goal in goals) {
+                        GoalItem(goal)
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Workouts",
+                        style = MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    for (workout in workouts) {
+                        WorkoutItem(workout)
+                    }
+
+                }
             }
-            Column {
-                Text(text = "Weight", fontWeight = FontWeight.Bold)
-                Text(text = weight)
-            }
-            Column {
-                Text(text = "BMI", fontWeight = FontWeight.Bold)
-                Text(text = bmi)
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Goals",
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
         )
-        for (goal in goals) {
-            GoalItem(goal)
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Workouts",
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        for (workout in workouts) {
-            WorkoutItem(workout)
-        }
+
+
     }
 }
 
@@ -215,7 +285,8 @@ fun ExerciseItem(exercise: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+
+fun DefaultProfilePreview() {
     val workouts = listOf(
         Workout(
             name = "Chest and Triceps",
