@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -184,7 +185,7 @@ class MainActivity : ComponentActivity() {
                 content = {
                     Column() {
                         Text(
-                            text = "Hello !",
+                            text = stringResource(id = R.string.Hello),
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
@@ -217,7 +218,7 @@ class MainActivity : ComponentActivity() {
                         )
                         Column() {
                             Text(
-                                text = "Today's Workout:",
+                                text = stringResource(id = R.string.TodaysWorkout),
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(3.dp),
@@ -256,17 +257,17 @@ class MainActivity : ComponentActivity() {
 
                                 shape = RoundedCornerShape(70)
 
-                            ) { Text(text = "My Workout") }
+                            ) { Text(text = stringResource(id = R.string.MyWorkout)) }
 
                             Button(
                                 onClick = {},
                                 modifier = Modifier.padding(12.dp),
                                 shape = RoundedCornerShape(70)
-                            ) { Text(text = "My Groups") }
+                            ) { Text(text = stringResource(id = R.string.MyGroups)) }
 
                         }
                         Text(
-                            text = "My Progress",
+                            text = stringResource(id = R.string.MyProgress),
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
@@ -276,7 +277,7 @@ class MainActivity : ComponentActivity() {
 
                         )
                         Text(
-                            text = "Goals",
+                            text = stringResource(id = R.string.Goals),
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
                             textDecoration = TextDecoration.Underline,

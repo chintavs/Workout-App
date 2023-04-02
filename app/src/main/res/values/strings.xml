@@ -6,4 +6,10 @@
     <string name="Sets">Sets</string>
     <string name="Reps">Reps</string>
     <string name="Time">Time</string>
+    <string name="MyProgress">My Progress</string>
+    <string name="MyGroups">My Groups</string>
+    <string name="MyWorkout">My Workout</string>
+    <string name="TodaysWorkout">Today\'s Workout:</string>
+    <string name="Hello">Hello !</string>
+    <string name="Goals">Goals</string>
 </resources>

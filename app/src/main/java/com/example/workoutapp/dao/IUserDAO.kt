@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface IUserDAO {
 
     //Paste JSON URL (RetrofitClientInstance.BASE_URL) in @GET
-    @GET("https://raw.githubusercontent.com/chintavs/Workout-App/main/app/assets/users.json")
+    @GET("users.json")
     fun getAllUsers() : Call<ArrayList<User>>
 }
