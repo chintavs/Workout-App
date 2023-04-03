@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
-import com.example.workoutapp.MainActivity
 import kotlinx.coroutines.launch
 
 class ProfileActivity : ComponentActivity() {

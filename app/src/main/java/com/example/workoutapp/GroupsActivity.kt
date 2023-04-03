@@ -10,7 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 
 class GroupsActivity : ComponentActivity() {
@@ -32,7 +32,7 @@ class GroupsActivity : ComponentActivity() {
 @Composable
 fun GroupGreeting(name: String) {
     val context = LocalContext.current
-    val loadingGroup = "Loading group..."
+    val loadingGroup = stringResource(R.string.loading_group)
     Column() {
         Text(
             text = "$name's Groups"
