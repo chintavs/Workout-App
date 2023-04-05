@@ -39,10 +39,10 @@ class RecordActivity : ComponentActivity() {
 
 @Composable
 fun RecordWO() {
-    var Name by remember { mutableStateOf("") }
-    var Sets by remember { mutableStateOf("") }
-    var Reps by remember { mutableStateOf("") }
-    var Time by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var sets by remember { mutableStateOf("") }
+    var reps by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf("") }
     val context = LocalContext.current
     Column (
         modifier = Modifier
@@ -58,33 +58,33 @@ fun RecordWO() {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
-            value = Name,
+            value = name,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Name =  it},
+            onValueChange = {name =  it},
             label = {Text (stringResource(R.string.workoutName))})
         OutlinedTextField(
-            value = Reps,
+            value = reps,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Reps =  it},
+            onValueChange = {reps =  it},
             label = {Text (stringResource(R.string.Reps))})
         OutlinedTextField(
-            value = Sets,
+            value = sets,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Sets =  it},
+            onValueChange = {sets =  it},
             label = {Text (stringResource(R.string.Sets))})
         OutlinedTextField(
-            value = Time,
+            value = time,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Time =  it},
+            onValueChange = {time =  it},
             label = {Text (stringResource(R.string.Time))})
 
         Button(
             onClick = {
-                Toast.makeText(context, "$Name $Sets $Reps $Time", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "$name $sets $reps $time", Toast.LENGTH_LONG).show()
             })
         {
             Text(text = "Save")
