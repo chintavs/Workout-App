@@ -30,7 +30,7 @@ class RecordActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    RecordWO()
+                    RecordWorkout()
                 }
             }
         }
@@ -38,7 +38,7 @@ class RecordActivity : ComponentActivity() {
 }
 
 @Composable
-fun RecordWO() {
+fun RecordWorkout() {
     var Name by remember { mutableStateOf("") }
     var Sets by remember { mutableStateOf("") }
     var Reps by remember { mutableStateOf("") }
@@ -104,6 +104,6 @@ fun RecordWO() {
 @Composable
 fun RecordPreview() {
     WorkoutAppTheme {
-        RecordWO()
+        RecordWorkout()
     }
 }

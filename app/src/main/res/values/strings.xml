@@ -6,4 +6,6 @@
     <string name="Sets">Sets</string>
     <string name="Reps">Reps</string>
     <string name="Time">Time</string>
+    <string name="loading_group">Loading group...</string>
+
 </resources>
