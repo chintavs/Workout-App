@@ -346,7 +346,7 @@ class MainActivity : ComponentActivity() {
                 listenToUserWorkout()
             }
         } else {
-            Log.e("MainActivitytwo.kt", "Error logging in " + response?.error?.errorCode)
+            Log.e("MainActivity.kt", "Error logging in " + response?.error?.errorCode)
         }
 
     }

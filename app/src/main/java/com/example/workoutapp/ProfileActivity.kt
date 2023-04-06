@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
@@ -119,7 +120,7 @@ fun UserProfile(
                             id = "Settings",
                             title = "Settings",
                             contentDescription = "Go to Settings",
-                            icon = Icons.Default.Delete
+                            icon = Icons.Default.Settings
                         ),
 
                         MenuItem(
@@ -146,7 +147,8 @@ fun UserProfile(
                         text = "$username's Profile",
                         style = MaterialTheme.typography.h4,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -170,7 +172,8 @@ fun UserProfile(
                         text = "Goals",
                         style = MaterialTheme.typography.h5,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
                     )
                     for (goal in goals) {
                         GoalItem(goal)
@@ -180,7 +183,8 @@ fun UserProfile(
                         text = "Workouts",
                         style = MaterialTheme.typography.h5,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
                     )
                     for (workout in workouts) {
                         WorkoutItem(workout)
