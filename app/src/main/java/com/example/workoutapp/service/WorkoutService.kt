@@ -22,7 +22,8 @@ class WorkoutService {
         "Alternating_Deltoid_Raise", "Alternating_Floor_Press", "Alternating_Hang_Clean", "Alternating_Kettlebell_Press",
             "Alternating_Kettlebell_Row", "Alternating_Renegade_Row","Ankle_Circles,Ankle_On_The_Knee" ,"Anterior_Tibialis-SMR","Anti-Gravity_Press"
             ,"Arm_Circles", "Arnold_Dumbbell_Press", "Around_The_Worlds", "Atlas_Stone_Trainer",
-           "Atlas_Stones,Axle_Deadlift")
+           "Atlas_Stones,Axle_Deadlift", "Back_Flyes_-_With_Bands", "Backward_Drag", "Backward_Medicine_Ball_Throw",
+        "Balance_Board", "Ball_Leg_Curl")
         arr.forEach {
             suspend fun nested() : List<WorkoutRec>? {
                 return withContext(Dispatchers.IO) {
