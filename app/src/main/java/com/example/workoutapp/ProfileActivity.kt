@@ -3,6 +3,7 @@ package com.example.workoutapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,6 +11,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,6 +60,21 @@ class ProfileActivity : ComponentActivity() {
     }
 }
 
+//function ProfileScreen to add a header image to user's profile
+@Composable
+fun ProfileScreen() {
+    Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+        Image(
+            painter = painterResource(id = R.drawable.profile_header),
+            contentDescription = "Profile Header Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+    // rest of the profile screen UI goes here
+}
+
+
 /* Composable function UserProfile for displaying a user's profile information with goals and workouts in Kotlin. */
 
 /* The function takes in several parameters including username, height, weight, BMI, a list of goals,
@@ -76,8 +94,6 @@ fun UserProfile(
     workouts: List<Workout>,
     modifier: Modifier = Modifier,
 ) {
-
-
 
     Column(
         modifier = Modifier,
