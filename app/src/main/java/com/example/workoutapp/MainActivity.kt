@@ -8,7 +8,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +20,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -49,6 +53,7 @@ import java.util.*
 class MainActivity : ComponentActivity() {
 
 
+    val MaterialIconDimension = 24f
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
@@ -352,6 +357,136 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    @Composable
+    fun RecordWorkout() {
+        var Name by remember { mutableStateOf("") }
+        var Sets by remember { mutableStateOf("") }
+        var Reps by remember { mutableStateOf("") }
+        var Time by remember { mutableStateOf("") }
+        val context = LocalContext.current
+        Column (
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(
+                text = "Record Workout",
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            androidx.compose.material3.OutlinedTextField(
+                value = Name,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { Name = it },
+                label = { Text(stringResource(R.string.workoutName)) })
+            androidx.compose.material3.OutlinedTextField(
+                value = Reps,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { Reps = it },
+                label = { Text(stringResource(R.string.Reps)) })
+            androidx.compose.material3.OutlinedTextField(
+                value = Sets,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { Sets = it },
+                label = { Text(stringResource(R.string.Sets)) })
+            androidx.compose.material3.OutlinedTextField(
+                value = Time,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { Time = it },
+                label = { Text(stringResource(R.string.Time)) })
+
+            Button(
+                onClick = {
+                    Toast.makeText(context, "$Name $Sets $Reps $Time", Toast.LENGTH_LONG).show()
+                })
+            {
+                Text(text = "Save")
+            }
+
+            Button(
+                onClick = {
+                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                })
+            {
+                Text(text = "Cancel")
+            }
+        }
+    }
+
+    data class CollapsableSection(val title: String, val rows: List<String>)
+
+    @Composable
+    fun MyWorkout(
+        sections: List<CollapsableSection>
+    ) {
+        val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
+
+        Column (
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "My Workouts",
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(75.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            userScrollEnabled = true
+        ) {
+            sections.forEachIndexed { i, dataItem ->
+                val collapsed = collapsedState[i]
+                item(key = "header_$i") {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable {
+                                collapsedState[i] = !collapsed
+                            }
+                    ) {
+                        Text(
+                            dataItem.title,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .padding(vertical = 10.dp)
+                                .weight(1f)
+                        )
+                    }
+                    Divider()
+                }
+                if (!collapsed) {
+                    items(dataItem.rows) { row ->
+                        Row {
+                            Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
+                            Text(
+                                row,
+                                modifier = Modifier
+                                    .padding(vertical = 10.dp)
+                            )
+                        }
+                        Divider()
+                    }
+                }
+            }
+        }
+
+    }
 
     private fun signIn() {
         val providers = arrayListOf(
@@ -395,6 +530,30 @@ class MainActivity : ComponentActivity() {
     fun MainPage() {
         WorkoutAppTheme {
             MainPage("Android")
+            MyWorkout(
+                sections = listOf(
+                    CollapsableSection(
+                        title = "Monday",
+                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    ),
+                    CollapsableSection(
+                        title = "Tuesday",
+                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    ),
+                    CollapsableSection(
+                        title = "Wednesday",
+                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    ),
+                    CollapsableSection(
+                        title = "Thursday",
+                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    ),
+                    CollapsableSection(
+                        title = "Friday",
+                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    ),
+                )
+            )
         }
 
     }
