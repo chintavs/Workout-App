@@ -1,12 +1,11 @@
 package com.example.workoutapp
 
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -23,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.workoutapp.dto.User
 import com.example.workoutapp.dto.WorkoutRec
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
@@ -42,54 +43,18 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
-var user: FirebaseUser? = null
+
 
 class MainActivity : ComponentActivity() {
 
 
-    private var userWorkout: MutableLiveData<List<WorkoutRec>> = MutableLiveData<List<WorkoutRec>>()
-
-    private lateinit var firestore: FirebaseFirestore
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    private var userWork : User? = null
-
-    init {
-        firestore = FirebaseFirestore.getInstance()
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        listenToUserWorkout()
-    }
-
-    private fun listenToUserWorkout() {
-        user?.let {
-            user ->
-            firestore.collection("users").document(user.uid).collection("userWorkout").addSnapshotListener {
-                // error handling
-                    snapshot, e ->
-                if (e != null) {
-                    Log.w("Listen Failed", e)
-                    return@addSnapshotListener
-                }
-                snapshot?.let {
-                    val alluserWorkout = ArrayList<WorkoutRec>()
-                    val documents = snapshot.documents
-                    documents.forEach {
-                        val userWorkouts = it.toObject(userWorkout::class.java)
-                        userWorkouts?.let {
-                            alluserWorkout.add(it!!)
-                        }
-
-                    }
-                    userWorkout.value = alluserWorkout
-                }
-            }
-        }
-    }
+    private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,8 +62,8 @@ class MainActivity : ComponentActivity() {
                 firebaseUser?.let {
                     val user = User(it.uid, "","", "", "", "",
                         arrayOf(""), "", "", "", "")
-                    userWork = user
-                    listenToUserWorkout()
+                    viewModel.user = user
+                    viewModel.listenToUserWorkout()
                 }
             WorkoutAppTheme {
 
@@ -113,7 +78,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 
     private fun <E> MutableList<E>.add(element: MutableLiveData<List<E>>) {
 
@@ -314,6 +278,84 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+    @Composable
+    fun GroupGreeting(name: String) {
+        val context = LocalContext.current
+        val loadingGroup = stringResource(R.string.loading_group)
+        Column() {
+            Text(
+                text = "$name's Groups"
+            )
+            //Sample Button 1
+            Button(
+                onClick = {
+                    Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
+                },
+                content = {
+                    Text(text = "Group 1")
+                }
+            )
+            //Sample Button 2
+            Button(
+                onClick = {
+                    Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
+                },
+                content = {
+                    Text(text = "Group 2")
+                }
+            )
+        }
+
+    }
+    @Composable
+    fun ProfilePage(name: String) {
+        val workouts = listOf(
+            Workout(
+                name = "Chest and Triceps",
+                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+            ),
+            Workout(
+                name = "Back and Biceps",
+                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+            ),
+            Workout(
+                name = "Leg Day",
+                exercises = listOf("Squats", "Leg Press", "Calf Raises")
+            )
+        )
+        val goals = listOf(
+            Goal(
+                name = "Gain 10kg",
+                progress = "30"
+            ),
+            Goal(
+                name = "Build Core Strength",
+                progress = "60"
+            ),
+            Goal(
+                name = "Gain 3kg of muscle",
+                progress = "99"
+            )
+        )
+        WorkoutAppTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                Column {
+
+                    UserProfile(
+                        username = "Pratik",
+                        height = "167cm",
+                        weight = "57kg",
+                        bmi = "21.8",
+                        goals = goals,
+                        workouts = workouts
+                    )
+                }
+            }
+        }
+    }
 
     private fun signIn() {
         val providers = arrayListOf(
@@ -341,23 +383,14 @@ class MainActivity : ComponentActivity() {
             firebaseUser?.let {
                 val user = User(it.uid, "","", "", "", "",
                     arrayOf(""), "", "", "", "")
-                userWork = user
-                saveUser()
-                listenToUserWorkout()
+                viewModel.user = user
+                viewModel.saveUser()
+                viewModel.listenToUserWorkout()
             }
         } else {
             Log.e("MainActivity.kt", "Error logging in " + response?.error?.errorCode)
         }
 
-    }
-// in any place that saves something that relates to a user you need to use user?.let {}
-    private fun saveUser () {
-        user?.let {
-                user ->
-            val handle = firestore.collection("users").document(user.uid).set(user)
-            handle.addOnSuccessListener { Log.d("Firebase", "Document Saved") }
-            handle.addOnFailureListener { Log.e("Firebase", "Save failed $it ") }
-        }
     }
 
 

@@ -289,7 +289,7 @@ fun ExerciseItem(exercise: String) {
 @Preview(showBackground = true)
 @Composable
 
-fun DefaultProfilePreview() {
+fun ProfilePage() {
     val workouts = listOf(
         Workout(
             name = "Chest and Triceps",
