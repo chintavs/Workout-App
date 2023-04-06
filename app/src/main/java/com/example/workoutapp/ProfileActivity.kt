@@ -95,8 +95,6 @@ fun UserProfile(
     modifier: Modifier = Modifier,
 ) {
 
-
-
     Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
