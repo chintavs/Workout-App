@@ -31,17 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.workoutapp.dto.User
-import com.example.workoutapp.dto.WorkoutRec
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -72,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Main("Android")
+                    MainPage("Android")
                 }
 
             }
@@ -87,7 +83,7 @@ class MainActivity : ComponentActivity() {
         return sdf.format(Date())
     }
     @Composable
-    fun Main(name: String?) {
+    fun MainPage(name: String?) {
 
 //Navigation is setup with a Scaffold
         Column(
@@ -279,7 +275,7 @@ class MainActivity : ComponentActivity() {
 
     }
     @Composable
-    fun GroupGreeting(name: String) {
+    fun GroupPage(name: String) {
         val context = LocalContext.current
         val loadingGroup = stringResource(R.string.loading_group)
         Column() {
@@ -396,9 +392,9 @@ class MainActivity : ComponentActivity() {
 
     @Preview(showBackground = true)
     @Composable
-    fun DefaultMainPreview() {
+    fun MainPage() {
         WorkoutAppTheme {
-            Main("Android")
+            MainPage("Android")
         }
 
     }
