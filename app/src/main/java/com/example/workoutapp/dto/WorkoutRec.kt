@@ -18,24 +18,6 @@ data class WorkoutRec(@SerializedName("name") var workoutName: String, val force
         return "$workoutName"
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as WorkoutRec
-
-        if (!primaryMuscles.contentEquals(other.primaryMuscles)) return false
-        if (!secondaryMuscles.contentEquals(other.secondaryMuscles)) return false
-        if (!instructions.contentEquals(other.instructions)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = primaryMuscles.contentHashCode()
-        result = 31 * result + secondaryMuscles.contentHashCode()
-        result = 31 * result + instructions.contentHashCode()
-        return result
-    }
 
 }
