@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface IGroupDAO {
 
     //Paste JSON URL (RetrofitClientInstance.BASE_URL) in @GET
-    @GET("https://raw.githubusercontent.com/chintavs/Workout-App/main/app/assets/groups.json")
+    @GET("groups.json")
     fun getAllGroups() : Call<ArrayList<Group>>
 }

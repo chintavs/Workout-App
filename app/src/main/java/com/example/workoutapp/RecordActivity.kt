@@ -30,7 +30,7 @@ class RecordActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    RecordWO()
+                    RecordWorkout()
                 }
             }
         }
@@ -38,11 +38,11 @@ class RecordActivity : ComponentActivity() {
 }
 
 @Composable
-fun RecordWO() {
-    var name by remember { mutableStateOf("") }
-    var sets by remember { mutableStateOf("") }
-    var reps by remember { mutableStateOf("") }
-    var time by remember { mutableStateOf("") }
+fun RecordWorkout() {
+    var Name by remember { mutableStateOf("") }
+    var Sets by remember { mutableStateOf("") }
+    var Reps by remember { mutableStateOf("") }
+    var Time by remember { mutableStateOf("") }
     val context = LocalContext.current
     Column (
         modifier = Modifier
@@ -58,33 +58,33 @@ fun RecordWO() {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
-            value = name,
+            value = Name,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {name =  it},
+            onValueChange = {Name =  it},
             label = {Text (stringResource(R.string.workoutName))})
         OutlinedTextField(
-            value = reps,
+            value = Reps,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {reps =  it},
+            onValueChange = {Reps =  it},
             label = {Text (stringResource(R.string.Reps))})
         OutlinedTextField(
-            value = sets,
+            value = Sets,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {sets =  it},
+            onValueChange = {Sets =  it},
             label = {Text (stringResource(R.string.Sets))})
         OutlinedTextField(
-            value = time,
+            value = Time,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {time =  it},
+            onValueChange = {Time =  it},
             label = {Text (stringResource(R.string.Time))})
 
         Button(
             onClick = {
-                Toast.makeText(context, "$name $sets $reps $time", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "$Name $Sets $Reps $Time", Toast.LENGTH_LONG).show()
             })
         {
             Text(text = "Save")
@@ -104,6 +104,6 @@ fun RecordWO() {
 @Composable
 fun RecordPreview() {
     WorkoutAppTheme {
-        RecordWO()
+        RecordWorkout()
     }
 }
