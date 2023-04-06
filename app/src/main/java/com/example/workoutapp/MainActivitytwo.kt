@@ -1,10 +1,12 @@
 package com.example.workoutapp
 
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -42,7 +44,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 var user: FirebaseUser? = null
@@ -50,19 +53,19 @@ var user: FirebaseUser? = null
 class MainActivity : ComponentActivity() {
 
 
-    var userWorkout: MutableLiveData<List<WorkoutRec>> = MutableLiveData<List<WorkoutRec>>()
+    private var userWorkout: MutableLiveData<List<WorkoutRec>> = MutableLiveData<List<WorkoutRec>>()
 
     private lateinit var firestore: FirebaseFirestore
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-    var userWork : User? = null
+    private var userWork : User? = null
 
     init {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        listentouserWorkout()
+        listenToUserWorkout()
     }
 
-    private fun listentouserWorkout() {
+    private fun listenToUserWorkout() {
         user?.let {
             user ->
             firestore.collection("users").document(user.uid).collection("userWorkout").addSnapshotListener {
@@ -95,7 +98,7 @@ class MainActivity : ComponentActivity() {
                     val user = User(it.uid, "","", "", "", "",
                         arrayOf(""), "", "", "", "")
                     userWork = user
-                    listentouserWorkout()
+                    listenToUserWorkout()
                 }
             WorkoutAppTheme {
 
@@ -115,8 +118,10 @@ class MainActivity : ComponentActivity() {
     private fun <E> MutableList<E>.add(element: MutableLiveData<List<E>>) {
 
     }
-
-
+    private fun getCurrentDateAndTime(): String {
+        val sdf = SimpleDateFormat("'Today is:\n'dd-MM-yyyy")
+        return sdf.format(Date())
+    }
     @Composable
     fun Main(name: String?) {
 
@@ -197,13 +202,8 @@ class MainActivity : ComponentActivity() {
                     }
 
                     Column() {
-                        // variable for simple date format.
-                        val sdf = SimpleDateFormat("'Today is:\n'dd-MM-yyyy")
 
-                        // on below line we are creating a variable for
-                        // current date and time and calling a simple
-                        // date format in it.
-                        val currentDateAndTime = sdf.format(Date())
+                        val currentDateAndTime = getCurrentDateAndTime()
 
                         Text(
                             text = currentDateAndTime,
@@ -315,7 +315,7 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    fun signIn() {
+    private fun signIn() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build()
@@ -343,7 +343,7 @@ class MainActivity : ComponentActivity() {
                     arrayOf(""), "", "", "", "")
                 userWork = user
                 saveUser()
-                listentouserWorkout()
+                listenToUserWorkout()
             }
         } else {
             Log.e("MainActivitytwo.kt", "Error logging in " + response?.error?.errorCode)
