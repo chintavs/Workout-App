@@ -23,14 +23,14 @@ class GroupsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    GroupGreeting("Android")
+                    GroupPage("Android")
                 }
             }
         }
     }
 }
 @Composable
-fun GroupGreeting(name: String) {
+fun GroupPage(name: String) {
     val context = LocalContext.current
     val loadingGroup = stringResource(R.string.loading_group)
     Column() {
