@@ -15,10 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -279,26 +276,46 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
+    @Composable
+    fun UserSpinner (users: List<User>){
+        var userText by remember{ mutableStateOf("")}
+        var expanded by remember { mutableStateOf(false)}
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+            Row(Modifier
+                .padding(24.dp)
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = userText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
+                DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
+                    
+                }
+            }
+        }
+    }
+
     @Composable
     fun GroupPage(name: String) {
         val context = LocalContext.current
         val loadingGroup = stringResource(R.string.loading_group)
-        
-        var isExpanded by remember{
-            mutableStateOf(false)
-        }
         
         Column() {
             Text(
                 text = "$name's Groups"
             )
 
-            // TODO: Create buttons based on groups the user is in 
+            // TODO: Create buttons based on groups the user is in
             //Sample Button 1
             Button(
                 onClick = {
                     Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
-                    isExpanded = true
+
                 },
                 content = {
                     Text(text = "Group 1")
@@ -313,13 +330,6 @@ class MainActivity : ComponentActivity() {
                     Text(text = "Group 2")
                 }
             )
-            //Dropdown Menu
-            DropdownMenu(
-                expanded = isExpanded, 
-                onDismissRequest = {isExpanded = false}
-            ) {
-                // TODO: Add items based on which group is selected. 
-            }
         }
 
     }
