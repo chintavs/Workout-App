@@ -309,7 +309,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun UserSpinner (users: List<User>){
-        var userText by remember{ mutableStateOf("")}
+        var userText by remember{ mutableStateOf("User Collection")}
         var expanded by remember { mutableStateOf(false)}
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
             Row(Modifier
@@ -327,7 +327,7 @@ class MainActivity : ComponentActivity() {
                     users.forEach {
                         singleUser -> DropdownMenuItem(onClick = {
                             expanded = false
-                        userText = singleUser.toString()
+                        userText = singleUser.nameToString()
                         selectedUser = singleUser
                     }){
                             Text(text = singleUser.toString())
