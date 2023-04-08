@@ -6,7 +6,6 @@ import retrofit2.http.GET
 
 interface IGroupDAO {
 
-    //Paste JSON URL (RetrofitClientInstance.BASE_URL) in @GET
     @GET("groups.json")
     fun getAllGroups() : Call<ArrayList<Group>>
 }

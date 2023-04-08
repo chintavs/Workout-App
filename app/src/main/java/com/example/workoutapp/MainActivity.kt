@@ -283,14 +283,22 @@ class MainActivity : ComponentActivity() {
     fun GroupPage(name: String) {
         val context = LocalContext.current
         val loadingGroup = stringResource(R.string.loading_group)
+        
+        var isExpanded by remember{
+            mutableStateOf(false)
+        }
+        
         Column() {
             Text(
                 text = "$name's Groups"
             )
+
+            // TODO: Create buttons based on groups the user is in 
             //Sample Button 1
             Button(
                 onClick = {
                     Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
+                    isExpanded = true
                 },
                 content = {
                     Text(text = "Group 1")
@@ -305,6 +313,13 @@ class MainActivity : ComponentActivity() {
                     Text(text = "Group 2")
                 }
             )
+            //Dropdown Menu
+            DropdownMenu(
+                expanded = isExpanded, 
+                onDismissRequest = {isExpanded = false}
+            ) {
+                // TODO: Add items based on which group is selected. 
+            }
         }
 
     }
