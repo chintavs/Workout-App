@@ -50,6 +50,7 @@ import java.util.*
 class MainActivity : ComponentActivity() {
 
 
+    private var selectedUser: User? = null
     val MaterialIconDimension = 24f
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
@@ -57,12 +58,40 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-                firebaseUser?.let {
+            firebaseUser?.let {
                     val user = User(it.uid, "","", "", "", "",
                         arrayOf(""), "", "", "", "")
                     viewModel.user = user
                     viewModel.listenToUserWorkout()
-                }
+            }
+            // TODO:  Convert below mock data into parsed data
+            // Add mock users for GroupSpinner function
+            val users = ArrayList<User>()
+            users.add(User(
+                displayName = "daltonco",
+                firstName = "Colton",
+                lastName = "Dalton",
+                calorieGoal = "10",
+                workoutsCompleted = "10",
+                workoutDate = "",
+                height = "10",
+                weight = "10",
+                bmi = "10",
+                friendList = arrayOf("")
+            ))
+            users.add(User(
+                displayName = "arthursr01",
+                firstName = "Sean",
+                lastName = "Arthur",
+                calorieGoal = "10",
+                workoutsCompleted = "10",
+                workoutDate = "",
+                height = "10",
+                weight = "10",
+                bmi = "10",
+                friendList = arrayOf("")
+            ))
+            // End mock users
             WorkoutAppTheme {
 
                 // A surface container using the 'background' color from the theme
@@ -71,6 +100,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     MainPage("Android")
+                    GroupPage(name = "Android", users)
                 }
 
             }
@@ -294,14 +324,22 @@ class MainActivity : ComponentActivity() {
                 Text(text = userText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
-                    
+                    users.forEach {
+                        singleUser -> DropdownMenuItem(onClick = {
+                            expanded = false
+                        userText = singleUser.toString()
+                        selectedUser = singleUser
+                    }){
+                            Text(text = singleUser.toString())
+                    }
+                    }
                 }
             }
         }
     }
 
     @Composable
-    fun GroupPage(name: String) {
+    fun GroupPage(name: String, users: List<User> = ArrayList<User>()) {
         val context = LocalContext.current
         val loadingGroup = stringResource(R.string.loading_group)
         
@@ -309,6 +347,7 @@ class MainActivity : ComponentActivity() {
             Text(
                 text = "$name's Groups"
             )
+            UserSpinner(users = users)
 
             // TODO: Create buttons based on groups the user is in
             //Sample Button 1
