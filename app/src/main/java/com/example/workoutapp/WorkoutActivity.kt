@@ -152,13 +152,13 @@ fun MyWorkout(
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
-                DrawerHeader()
+                DrawerHeader("Test1")
                 DrawerBody(
                     items = listOf(
                         MenuItem(
                             id = "Home",
                             title = "Home",
-                            contentDescription = "Go to Home Screen",
+                            contentDescription = "Go to Home com.example.workoutapp.Screen",
                             icon = Icons.Default.Home
                         ),
                         MenuItem(

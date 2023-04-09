@@ -35,6 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.workoutapp.dto.User
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import com.firebase.ui.auth.AuthUI
@@ -42,15 +48,21 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+object NavRoute{
+    val Main_Page = "MainPage"
+    val Profile_Page = "ProfilePage"
+    val Group_Page = "GroupPage"
+}
 
 
 class MainActivity : ComponentActivity() {
+
 
 
     val MaterialIconDimension = 24f
@@ -67,16 +79,19 @@ class MainActivity : ComponentActivity() {
                     viewModel.listenToUserWorkout()
                 }
             WorkoutAppTheme {
-
+            val navController = rememberNavController()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainPage("Android")
+
+                   MyNavHost(navHostController = navController)
                 }
 
+
             }
+
         }
     }
 
@@ -87,84 +102,45 @@ class MainActivity : ComponentActivity() {
         val sdf = SimpleDateFormat("'Today is:\n'dd-MM-yyyy")
         return sdf.format(Date())
     }
+
     @Composable
-    fun MainPage(name: String?) {
+    fun MyNavHost(navHostController: NavHostController) {
+NavHost(navController = navHostController, startDestination =NavRoute.Main_Page
+) {
+    val routeWithArguments = "${NavRoute.Main_Page}/{argument}"
+    composable(NavRoute.Main_Page){
+        MainPage{
+            navHostController.navigate("${NavRoute.Profile_Page}/Test")
 
-//Navigation is setup with a Scaffold
-        Column(
-            modifier = Modifier,
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            val scaffoldState = rememberScaffoldState()
-            val scope = rememberCoroutineScope()
-            Scaffold(
+        }
+    }
+    composable(routeWithArguments,
+        arguments = listOf(navArgument(name = "argument"){})
+    ){navEntry ->
+        ProfilePage(navEntry.arguments?.getString("argument")){
+            navHostController.navigate(NavRoute.Main_Page)
 
-                scaffoldState = scaffoldState,
+        }
+    }
 
-                topBar = {
+}
+    }
+    @Composable
+    fun MainPage(onNavigation:() -> Unit) {
+val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+        val scope = rememberCoroutineScope()
+        val navController = rememberNavController()
 
-                    AppBar {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
+        Scaffold(
+            scaffoldState = scaffoldState,
 
-                    }
+            drawerContent = {
 
-                },
-                drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-                drawerContent = {
-                    DrawerHeader()
-                    // Items within the open drawer
-                    DrawerBody(
-                        items = listOf(
-                            MenuItem(
-                                id = "Home",
-                                title = "Home",
-                                contentDescription = "Go to Home Screen",
-                                icon = Icons.Default.Home
-                            ),
-                            MenuItem(
-                                id = "Profile",
-                                title = "Profile",
-                                contentDescription = "Go to Profile Page",
-                                icon = Icons.Default.Person
-                            ),
-                            MenuItem(
-                                id = "Settings",
-                                title = "Settings",
-                                contentDescription = "Go to Settings",
-                                icon = Icons.Default.Delete
-                            ),
-                            MenuItem(
-                                id = "Login",
-                                title = "Login",
-                                contentDescription = "Login",
-                                icon = Icons.Default.Lock
-                            ),
+            }
+        ){
 
-                            ),
-                        onItemClick = {
-                            if (it.title == "Login") {
-                                signIn()
-                            }
+        }
 
-                            println("Clicked on ${it.title}")
-                        }
-                    )
-                },
-                content = {
-                    Column() {
-                        Text(
-                            text = stringResource(id = R.string.Hello),
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .width(1000.dp),
-                            textAlign = TextAlign.Center
-
-                        )
-                    }
 
                     Column() {
 
@@ -217,7 +193,9 @@ class MainActivity : ComponentActivity() {
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Button(
-                                onClick = {},
+                                onClick = {
+                                    onNavigation()
+                                },
                                 modifier = Modifier.padding(12.dp),
 
                                 shape = RoundedCornerShape(70)
@@ -225,7 +203,9 @@ class MainActivity : ComponentActivity() {
                             ) { Text(text = stringResource(id = R.string.MyWorkout)) }
 
                             Button(
-                                onClick = {},
+                                onClick = {
+                                onNavigation()
+                                },
                                 modifier = Modifier.padding(12.dp),
                                 shape = RoundedCornerShape(70)
                             ) { Text(text = stringResource(id = R.string.MyGroups)) }
@@ -274,11 +254,9 @@ class MainActivity : ComponentActivity() {
                     }
 
 
-                },
-            )
-        }
+                }
 
-    }
+
     @Composable
     fun GroupPage(name: String) {
         val context = LocalContext.current
@@ -309,7 +287,9 @@ class MainActivity : ComponentActivity() {
 
     }
     @Composable
-    fun ProfilePage(name: String) {
+    fun ProfilePage( string: String?,onNavigation:() -> Unit) {
+
+
         val workouts = listOf(
             Workout(
                 name = "Chest and Triceps",
@@ -358,7 +338,7 @@ class MainActivity : ComponentActivity() {
         }
     }
     @Composable
-    fun RecordWorkout() {
+    fun RecordWorkout(onNavigation:() -> Unit) {
         var Name by remember { mutableStateOf("") }
         var Sets by remember { mutableStateOf("") }
         var Reps by remember { mutableStateOf("") }
@@ -423,9 +403,7 @@ class MainActivity : ComponentActivity() {
     data class CollapsableSection(val title: String, val rows: List<String>)
 
     @Composable
-    fun MyWorkout(
-        sections: List<CollapsableSection>
-    ) {
+    fun MyWorkout(sections: List<CollapsableSection>) {
         val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
 
         Column (
@@ -529,7 +507,9 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainPage() {
         WorkoutAppTheme {
-            MainPage("Android")
+            MainPage(
+
+            )
             MyWorkout(
                 sections = listOf(
                     CollapsableSection(
