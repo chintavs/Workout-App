@@ -5,7 +5,7 @@
     <string name="workoutName">Workout Name</string>
     <string name="Sets">Sets</string>
     <string name="Reps">Reps</string>
-    <string name="Time">Time</string>
+    <string name="Day">Day</string>
 
     <string name="MyProgress">My Progress</string>
     <string name="MyGroups">My Groups</string>
