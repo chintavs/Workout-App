@@ -43,6 +43,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 
 
 
@@ -140,7 +143,7 @@ class MainActivity : ComponentActivity() {
                 },
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
                 drawerContent = {
-                    DrawerHeader()
+                    DrawerHeader("")
                     // Items within the open drawer
                     DrawerBody(
                         items = listOf(
