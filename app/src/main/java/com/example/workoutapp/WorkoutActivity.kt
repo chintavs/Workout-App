@@ -5,20 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
 
@@ -31,115 +29,44 @@ class WorkoutActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
-                )
-                {
-                    /* Creates a a drop down list containing all the days of the week
-                    * Each day contains a list of exercises done */
-
-                    MyWorkout(
-                        sections = listOf(
-                            CollapsableSection(
-                                title = "Monday",
-                                rows = listOf("Pushups", "Bench Press", " Cardio")
-                            ),
-                            CollapsableSection(
-                                title = "Tuesday",
-                                rows = listOf("Pushups", "Bench Press", " Cardio")
-                            ),
-                            CollapsableSection(
-                                title = "Wednesday",
-                                rows = listOf("Pushups", "Bench Press", " Cardio")
-                            ),
-                            CollapsableSection(
-                                title = "Thursday",
-                                rows = listOf("Pushups", "Bench Press", " Cardio")
-                            ),
-                            CollapsableSection(
-                                title = "Friday",
-                                rows = listOf("Pushups", "Bench Press", " Cardio")
-                            ),
+                ) {
+                    Column {
+                        val workoutweek = listOf(
+                            MyWorkoutDay(
+                                day = "",
+                                exercises = listOf("")
+                            )
                         )
-                    )
+
+                        MyWorkouts(
+                            myWorkoutWeek = workoutweek
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-data class CollapsableSection(val title: String, val rows: List<String>)
+/* Composable function MyWorkouts for displaying a user's workout routine by days of teh week. */
 
-const val MaterialIconDimension = 24f
+/* The workout routine page is displayed in a multi-row layout using expandable rows that list the user's exercises each day. */
+
+/* The user can add exercises to their routines through the plus button at the bottom. */
 
 @Composable
-fun MyWorkout(
-    sections: List<CollapsableSection>
+fun MyWorkouts(
+    myWorkoutWeek: List<MyWorkoutDay>,
+    modifier: Modifier = Modifier,
 ) {
-    val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
-
-    Column (
-        modifier = Modifier
-            .padding(20.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "My Workouts",
-            style = MaterialTheme.typography.h4,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-    }
-
-    LazyColumn(
-        modifier = Modifier
-            .padding(75.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        userScrollEnabled = true
-    ) {
-        sections.forEachIndexed { i, dataItem ->
-            val collapsed = collapsedState[i]
-            item(key = "header_$i") {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .clickable {
-                            collapsedState[i] = !collapsed
-                        }
-                ) {
-                    Text(
-                        dataItem.title,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(vertical = 10.dp)
-                            .weight(1f)
-                    )
-                }
-                Divider()
-            }
-            if (!collapsed) {
-                items(dataItem.rows) { row ->
-                    Row {
-                        Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
-                        Text(
-                            row,
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                        )
-                    }
-                    Divider()
-                }
-            }
-        }
-    }
-    Column {
+    Column(
+        modifier = Modifier,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ){
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
         Scaffold(
-
             scaffoldState = scaffoldState,
-
             topBar = {
 
                 AppBar {
@@ -158,7 +85,7 @@ fun MyWorkout(
                         MenuItem(
                             id = "Home",
                             title = "Home",
-                            contentDescription = "Go to Home Screen",
+                            contentDescription = "Go to Home com.example.workoutapp.Screen",
                             icon = Icons.Default.Home
                         ),
                         MenuItem(
@@ -186,44 +113,150 @@ fun MyWorkout(
                     }
                 )
 
+
             },
+
             content = {
+                Column(
+                    modifier = modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "My Workout Week",
+                        style = MaterialTheme.typography.h4,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    for (myWorkoutDay in myWorkoutWeek) {
+                        MyWorkoutExpandableItem(myWorkoutDay)
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    IconButton(
+                        onClick = {
+                        })
+                    {
+                        Icon(imageVector = Icons.Filled.AddCircle,
+                            contentDescription = null,
+                            modifier = Modifier.size(50.dp),
+                            tint = Teal200)
+                    }
+                }
             }
         )
 
+
     }
-
-
 }
 
+/* Composable function MyWorkoutExpandableItem that displays a single workout item in a Column layout. The function takes in
+   a MyWorkoutDay data class object as a parameter, which contains the Day and a list of exercises. */
+
+/* The workout's name is displayed using a Text composable function within a Row layout, which also
+   contains an Icon that toggles the display of the exercises when clicked. */
+
+/* If the user clicks on a row, the "expanded" variable will be set to true, and the MyExerciseItem
+   composable function will be called to display the list of exercises. */
+
+
+data class MyWorkoutDay(val day: String, val exercises: List<String>)
+@Composable
+fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier.padding(horizontal = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
+        ) {
+            Text(text = myWorkoutDay.day, fontWeight = FontWeight.Bold)
+            Icon(
+                if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                contentDescription = "",
+                tint = MaterialTheme.colors.secondary,
+            )
+        }
+        if (expanded) {
+            for (exercise in myWorkoutDay.exercises) {
+                MyExerciseItem(exercise)
+            }
+        }
+    }
+}
+
+/* The MyExerciseItem composable function takes in a String parameter, which represents a single exercise
+   in the list of exercises. It displays the exercise using a Text composable function within a Row layout. */
+
+
+@Composable
+fun MyExerciseItem(exercise: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = exercise,
+            modifier = Modifier.padding(start = 16.dp),
+            fontSize = 13.sp
+        )
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
+
 fun WorkoutPreview() {
-    WorkoutAppTheme {
-        MyWorkout(
-            sections = listOf(
-                CollapsableSection(
-                    title = "Monday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                ),
-                CollapsableSection(
-                    title = "Tuesday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                ),
-                CollapsableSection(
-                    title = "Wednesday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                ),
-                CollapsableSection(
-                    title = "Thursday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                ),
-                CollapsableSection(
-                    title = "Friday",
-                    rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                ),
-            )
+    val workoutWeek = listOf(
+        MyWorkoutDay(
+            day = "Saturday",
+            exercises = listOf("Squats", "Leg Press", "Calf Raises")
+        ),
+        MyWorkoutDay(
+            day = "Monday",
+            exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+        ),
+        MyWorkoutDay(
+            day = "Tuesday",
+            exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+        ),
+        MyWorkoutDay(
+            day = "Wednesday",
+            exercises = listOf("Squats", "Leg Press", "Calf Raises")
+        ),
+        MyWorkoutDay(
+            day = "Thursday",
+            exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+        ),
+        MyWorkoutDay(
+            day = "Friday",
+            exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+        ),
+        MyWorkoutDay(
+            day = "Saturday",
+            exercises = listOf("Squats", "Leg Press", "Calf Raises")
         )
+    )
+    WorkoutAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            Column {
+
+                MyWorkouts(
+                    myWorkoutWeek = workoutWeek
+                )
+            }
+        }
     }
 }

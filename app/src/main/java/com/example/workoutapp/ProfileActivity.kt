@@ -123,7 +123,7 @@ fun UserProfile(
                         MenuItem(
                             id = "Home",
                             title = "Home",
-                            contentDescription = "Go to Home Screen",
+                            contentDescription = "Go to Home com.example.workoutapp.Screen",
                             icon = Icons.Default.Home
                         ),
                         MenuItem(

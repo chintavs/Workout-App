@@ -5,10 +5,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,10 +39,10 @@ class RecordActivity : ComponentActivity() {
 
 @Composable
 fun RecordWorkout() {
-    var Name by remember { mutableStateOf("") }
-    var Sets by remember { mutableStateOf("") }
-    var Reps by remember { mutableStateOf("") }
-    var Time by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var sets by remember { mutableStateOf("") }
+    var reps by remember { mutableStateOf("") }
+    var day by remember { mutableStateOf("") }
     val context = LocalContext.current
     Column (
         modifier = Modifier
@@ -58,44 +58,52 @@ fun RecordWorkout() {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
-            value = Name,
+            value = name,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Name =  it},
+            onValueChange = {name =  it},
             label = {Text (stringResource(R.string.workoutName))})
         OutlinedTextField(
-            value = Reps,
+            value = reps,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Reps =  it},
+            onValueChange = {reps =  it},
             label = {Text (stringResource(R.string.Reps))})
         OutlinedTextField(
-            value = Sets,
+            value = sets,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Sets =  it},
+            onValueChange = {sets =  it},
             label = {Text (stringResource(R.string.Sets))})
         OutlinedTextField(
-            value = Time,
+            value = day,
             modifier = Modifier
                 .padding(10.dp),
-            onValueChange = {Time =  it},
-            label = {Text (stringResource(R.string.Time))})
+            onValueChange = {day =  it},
+            label = {Text (stringResource(R.string.Day))})
 
-        Button(
-            onClick = {
-                Toast.makeText(context, "$Name $Sets $Reps $Time", Toast.LENGTH_LONG).show()
-            })
-        {
-            Text(text = "Save")
-        }
+        Row() {
+            IconButton(
+                onClick = {
+                    Toast.makeText(context, "$name $sets $reps $day", Toast.LENGTH_LONG).show()
+                },
+                modifier = Modifier.padding(horizontal = 20.dp))
+            {
+                Icon(imageVector = Icons.Outlined.CheckCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp))
+            }
 
-        Button(
-            onClick = {
-                Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-            })
-        {
-            Text(text = "Cancel")
+            IconButton(
+                onClick = {
+                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                },
+                modifier = Modifier.padding(horizontal = 20.dp))
+            {
+                Icon(imageVector = Icons.Outlined.Close,
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp),)
+            }
         }
     }
 }

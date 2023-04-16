@@ -7,11 +7,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun DrawerHeader(headerText: String) {
@@ -30,7 +35,8 @@ fun DrawerBody(
     items: List<MenuItem>?,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (MenuItem) -> Unit
+    onItemClick: (MenuItem) -> Unit,
+
 ) {
     items?.let {
         LazyColumn(modifier) {
@@ -53,10 +59,15 @@ fun DrawerBody(
                         style = itemTextStyle,
                         modifier = Modifier.weight(1f)
                     )
-                }
+
+
+
+
             }
         }
     }
+}
+
 }
 
 
