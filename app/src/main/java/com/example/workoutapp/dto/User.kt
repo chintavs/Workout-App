@@ -18,4 +18,9 @@ data class User(val uid: String = "", var displayName: String?, var firstName: S
         //BMI: $bmi
         return "Name: $firstName $lastName\nUsername: $displayName\nCalorie Goal: $calorieGoal\nWorkouts Completed: $workoutsCompleted\nHeight (inches): $height\nWeight (lbs): $weight\nBMI: $bmi"
     }
+    //string concatenation for displaying within groups on GroupPage
+    fun nameToString(): String{
+        //Returns displayName, firstName lastName
+        return "$displayName, $firstName $lastName"
+    }
 }

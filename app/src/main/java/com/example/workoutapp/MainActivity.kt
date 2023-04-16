@@ -15,10 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +50,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 
 object NavRoute{
     val Main_Page = "MainPage"
@@ -65,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
 
 
+    private var selectedUser: User? = null
     val MaterialIconDimension = 24f
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
@@ -72,12 +73,40 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-                firebaseUser?.let {
+            firebaseUser?.let {
                     val user = User(it.uid, "","", "", "", "",
                         arrayOf(""), "", "", "", "")
                     viewModel.user = user
                     viewModel.listenToUserWorkout()
-                }
+            }
+            // TODO:  Convert below mock data into parsed data
+            // Add mock users for GroupSpinner function
+            val users = ArrayList<User>()
+            users.add(User(
+                displayName = "daltonco",
+                firstName = "Colton",
+                lastName = "Dalton",
+                calorieGoal = "10",
+                workoutsCompleted = "10",
+                workoutDate = "",
+                height = "10",
+                weight = "10",
+                bmi = "10",
+                friendList = arrayOf("")
+            ))
+            users.add(User(
+                displayName = "arthursr01",
+                firstName = "Sean",
+                lastName = "Arthur",
+                calorieGoal = "10",
+                workoutsCompleted = "10",
+                workoutDate = "",
+                height = "10",
+                weight = "10",
+                bmi = "10",
+                friendList = arrayOf("")
+            ))
+            // End mock users
             WorkoutAppTheme {
             val navController = rememberNavController()
                 // A surface container using the 'background' color from the theme
@@ -85,7 +114,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    MainPage("Android")
+                    GroupPage(name = "Android", users)
                    MyNavHost(navHostController = navController)
                 }
 
@@ -136,8 +166,43 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
 
             drawerContent = {
 
-            }
-        ){
+                },
+                drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                drawerContent = {
+                    DrawerHeader("")
+                    // Items within the open drawer
+                    DrawerBody(
+                        items = listOf(
+                            MenuItem(
+                                id = "Home",
+                                title = "Home",
+                                contentDescription = "Go to Home Screen",
+                                icon = Icons.Default.Home
+                            ),
+                            MenuItem(
+                                id = "Profile",
+                                title = "Profile",
+                                contentDescription = "Go to Profile Page",
+                                icon = Icons.Default.Person
+                            ),
+                            MenuItem(
+                                id = "Settings",
+                                title = "Settings",
+                                contentDescription = "Go to Settings",
+                                icon = Icons.Default.Delete
+                            ),
+                            MenuItem(
+                                id = "Login",
+                                title = "Login",
+                                contentDescription = "Login",
+                                icon = Icons.Default.Lock
+                            ),
+
+                            ),
+                        onItemClick = {
+                            if (it.title == "Login") {
+                                signIn()
+                            }
 
         }
 
@@ -256,19 +321,56 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
 
                 }
 
+    }
 
     @Composable
-    fun GroupPage(name: String) {
+    fun UserSpinner (users: List<User>){
+        var userText by remember{ mutableStateOf("User Collection")}
+        var expanded by remember { mutableStateOf(false)}
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+            Row(Modifier
+                .padding(24.dp)
+                .clickable {
+                    expanded = !expanded
+                }
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = userText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
+                DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
+                    users.forEach {
+                        singleUser -> DropdownMenuItem(onClick = {
+                            expanded = false
+                        userText = singleUser.nameToString()
+                        selectedUser = singleUser
+                    }){
+                            Text(text = singleUser.toString())
+                    }
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun GroupPage(name: String, users: List<User> = ArrayList<User>()) {
         val context = LocalContext.current
         val loadingGroup = stringResource(R.string.loading_group)
+        
         Column() {
             Text(
                 text = "$name's Groups"
             )
+            UserSpinner(users = users)
+
+            // TODO: Create buttons based on groups the user is in
             //Sample Button 1
             Button(
                 onClick = {
                     Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
+
                 },
                 content = {
                     Text(text = "Group 1")

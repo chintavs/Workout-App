@@ -79,7 +79,7 @@ fun MyWorkouts(
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
-                DrawerHeader("Test1")
+                DrawerHeader("")
                 DrawerBody(
                     items = listOf(
                         MenuItem(
