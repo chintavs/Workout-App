@@ -1,5 +1,6 @@
 package com.example.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavHostController
 import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
@@ -63,60 +66,7 @@ fun MyWorkouts(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
 
-                AppBar {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-
-                }
-
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                DrawerHeader("")
-                DrawerBody(
-                    items = listOf(
-                        MenuItem(
-                            id = "Home",
-                            title = "Home",
-                            contentDescription = "Go to Home com.example.workoutapp.Screen",
-                            icon = Icons.Default.Home
-                        ),
-                        MenuItem(
-                            id = "Profile",
-                            title = "Profile",
-                            contentDescription = "Go to Profile Page",
-                            icon = Icons.Default.Person
-                        ),
-                        MenuItem(
-                            id = "Settings",
-                            title = "Settings",
-                            contentDescription = "Go to Settings",
-                            icon = Icons.Default.Settings
-                        ),
-
-                        MenuItem(
-                            id = "Login",
-                            title = "Login",
-                            contentDescription = "Login",
-                            icon = Icons.Default.Lock
-                        ),
-                    ),
-                    onItemClick = {
-
-                    }
-                )
-
-
-            },
-
-            content = {
                 Column(
                     modifier = modifier
                         .padding(16.dp)
@@ -149,11 +99,11 @@ fun MyWorkouts(
                     }
                 }
             }
-        )
+
 
 
     }
-}
+
 
 /* Composable function MyWorkoutExpandableItem that displays a single workout item in a Column layout. The function takes in
    a MyWorkoutDay data class object as a parameter, which contains the Day and a list of exercises. */
@@ -212,10 +162,9 @@ fun MyExerciseItem(exercise: String) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 
-fun WorkoutPreview() {
+fun WorkoutPreview(navController: NavHostController) {
     val workoutWeek = listOf(
         MyWorkoutDay(
             day = "Saturday",

@@ -48,7 +48,7 @@ fun RecordWorkout() {
         modifier = Modifier
             .padding(20.dp)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.Bottom,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(

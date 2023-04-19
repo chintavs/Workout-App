@@ -1,9 +1,9 @@
 package com.example.workoutapp
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -23,19 +23,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.example.workoutapp.data.Workout
 import com.example.workoutapp.dto.User
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import com.firebase.ui.auth.AuthUI
@@ -43,20 +39,13 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 
 
 class MainActivity : ComponentActivity() {
-
 
     private var selectedUser: User? = null
     val MaterialIconDimension = 24f
@@ -113,7 +102,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainPage()
+                MainPage(arrayListOf(),"", arrayListOf())
+
                 }
 
 
@@ -133,7 +123,11 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun MainPage() {
+    fun MainPage(
+        goals: List<Goal>,
+        calorieGoal: String,
+        workouts: List<Workout>
+    ) {
         val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
         val scope = rememberCoroutineScope()
 
@@ -153,16 +147,10 @@ class MainActivity : ComponentActivity() {
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
-                DrawerHeader("")
+                DrawerHeader("Menu")
                 // Items within the open drawer
                 DrawerBody(
                     items = listOf(
-                        MenuItem(
-                            id = "Home",
-                            title = "Home",
-                            contentDescription = "Go to Home Screen",
-                            icon = Icons.Default.Home
-                        ),
                         MenuItem(
                             id = "Profile",
                             title = "Profile",
@@ -170,8 +158,8 @@ class MainActivity : ComponentActivity() {
                             icon = Icons.Default.Person
                         ),
                         MenuItem(
-                            id = "Settings",
-                            title = "Settings",
+                            id = "My Workouts",
+                            title = "Workouts",
                             contentDescription = "Go to Settings",
                             icon = Icons.Default.Delete
                         ),
@@ -186,8 +174,13 @@ class MainActivity : ComponentActivity() {
                     onItemClick = {
                         if (it.title == "Login") {
                             signIn()
+                        }  else if (it.title == "Workouts"){
+                            val navigate = Intent(this@MainActivity, WorkoutActivity::class.java)
+                            startActivity(navigate)
+                        } else if (it.title == "Profile"){
+                            val navigate = Intent(this@MainActivity, ProfileActivity::class.java)
+                            startActivity(navigate)
                         }
-
                         println("Clicked on ${it.title}")
                     }
                 )
@@ -205,6 +198,7 @@ class MainActivity : ComponentActivity() {
 
                     )
                 }
+
 
                 Column() {
 
@@ -232,6 +226,7 @@ class MainActivity : ComponentActivity() {
                     }
                     Box(
                         modifier = Modifier
+
                             .background(MaterialTheme.colors.primary)
                             .size(600.dp, 100.dp)
                             .drawBehind {
@@ -248,7 +243,15 @@ class MainActivity : ComponentActivity() {
                             .clip(shape = RoundedCornerShape(70)),
 
 
+                        ) {
+                        Text(
+                            text = "$workouts",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+
                         )
+                    }
 
 
                     Row(
@@ -258,21 +261,24 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Button(
                             onClick = {
-
+                                val navigate = Intent(this@MainActivity, WorkoutActivity::class.java)
+                                startActivity(navigate)
                             },
                             modifier = Modifier.padding(12.dp),
 
                             shape = RoundedCornerShape(70)
 
                         ) { Text(text = stringResource(id = R.string.MyWorkout)) }
-
                         Button(
                             onClick = {
-
+                                val navigate = Intent(this@MainActivity, RecordActivity::class.java)
+                                startActivity(navigate)
                             },
                             modifier = Modifier.padding(12.dp),
+
                             shape = RoundedCornerShape(70)
-                        ) { Text(text = stringResource(id = R.string.MyGroups)) }
+
+                        ) { Text(text = stringResource(id = R.string.MyRecord)) }
 
                     }
                     Text(
@@ -313,7 +319,22 @@ class MainActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .clip(shape = RoundedCornerShape(70)),
 
+                        ){
+                        Text(
+                            text = "$goals",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            textAlign = TextAlign.Center
                         )
+                        Text(
+                            text = "$calorieGoal",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier
+                                .align(Alignment.Center),
+                            textAlign = TextAlign.Center
+                        )
+                    }
 
                 }
             },
@@ -458,7 +479,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainPagePreview() {
         WorkoutAppTheme {
-            MainPage()
+
             MyWorkout(
                 sections = listOf(
                     CollapsableSection(
