@@ -27,8 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.MutableLiveData
@@ -53,16 +51,11 @@ import java.util.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-
-object NavRoute{
-    val Main_Page = "MainPage"
-    val Profile_Page = "ProfilePage"
-    val Group_Page = "GroupPage"
-}
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 
 
 class MainActivity : ComponentActivity() {
-
 
 
     private var selectedUser: User? = null
@@ -74,49 +67,53 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             firebaseUser?.let {
-                    val user = User(it.uid, "","", "", "", "",
-                        arrayOf(""), "", "", "", "")
-                    viewModel.user = user
-                    viewModel.listenToUserWorkout()
+                val user = User(
+                    it.uid, "", "", "", "", "",
+                    arrayOf(""), "", "", "", ""
+                )
+                viewModel.user = user
+                viewModel.listenToUserWorkout()
             }
             // TODO:  Convert below mock data into parsed data
             // Add mock users for GroupSpinner function
             val users = ArrayList<User>()
-            users.add(User(
-                displayName = "daltonco",
-                firstName = "Colton",
-                lastName = "Dalton",
-                calorieGoal = "10",
-                workoutsCompleted = "10",
-                workoutDate = "",
-                height = "10",
-                weight = "10",
-                bmi = "10",
-                friendList = arrayOf("")
-            ))
-            users.add(User(
-                displayName = "arthursr01",
-                firstName = "Sean",
-                lastName = "Arthur",
-                calorieGoal = "10",
-                workoutsCompleted = "10",
-                workoutDate = "",
-                height = "10",
-                weight = "10",
-                bmi = "10",
-                friendList = arrayOf("")
-            ))
+            users.add(
+                User(
+                    displayName = "daltonco",
+                    firstName = "Colton",
+                    lastName = "Dalton",
+                    calorieGoal = "10",
+                    workoutsCompleted = "10",
+                    workoutDate = "",
+                    height = "10",
+                    weight = "10",
+                    bmi = "10",
+                    friendList = arrayOf("")
+                )
+            )
+            users.add(
+                User(
+                    displayName = "arthursr01",
+                    firstName = "Sean",
+                    lastName = "Arthur",
+                    calorieGoal = "10",
+                    workoutsCompleted = "10",
+                    workoutDate = "",
+                    height = "10",
+                    weight = "10",
+                    bmi = "10",
+                    friendList = arrayOf("")
+                )
+            )
             // End mock users
             WorkoutAppTheme {
-            val navController = rememberNavController()
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainPage("Android")
-                    GroupPage(name = "Android", users)
-                   MyNavHost(navHostController = navController)
+                    MainPage()
                 }
 
 
@@ -128,206 +125,208 @@ class MainActivity : ComponentActivity() {
     private fun <E> MutableList<E>.add(element: MutableLiveData<List<E>>) {
 
     }
+
     private fun getCurrentDateAndTime(): String {
         val sdf = SimpleDateFormat("'Today is:\n'dd-MM-yyyy")
         return sdf.format(Date())
     }
 
+
     @Composable
-    fun MyNavHost(navHostController: NavHostController) {
-NavHost(navController = navHostController, startDestination =NavRoute.Main_Page
-) {
-    val routeWithArguments = "${NavRoute.Main_Page}/{argument}"
-    composable(NavRoute.Main_Page){
-        MainPage{
-            navHostController.navigate("${NavRoute.Profile_Page}/Test")
-
-        }
-    }
-    composable(routeWithArguments,
-        arguments = listOf(navArgument(name = "argument"){})
-    ){navEntry ->
-        ProfilePage(navEntry.arguments?.getString("argument")){
-            navHostController.navigate(NavRoute.Main_Page)
-
-        }
-    }
-
-}
-    }
-    @Composable
-    fun MainPage(onNavigation:() -> Unit) {
-val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+    fun MainPage() {
+        val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
         val scope = rememberCoroutineScope()
-        val navController = rememberNavController()
+
 
         Scaffold(
             scaffoldState = scaffoldState,
 
-            drawerContent = {
+            topBar = {
 
-                },
-                drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-                drawerContent = {
-                    DrawerHeader("")
-                    // Items within the open drawer
-                    DrawerBody(
-                        items = listOf(
-                            MenuItem(
-                                id = "Home",
-                                title = "Home",
-                                contentDescription = "Go to Home Screen",
-                                icon = Icons.Default.Home
-                            ),
-                            MenuItem(
-                                id = "Profile",
-                                title = "Profile",
-                                contentDescription = "Go to Profile Page",
-                                icon = Icons.Default.Person
-                            ),
-                            MenuItem(
-                                id = "Settings",
-                                title = "Settings",
-                                contentDescription = "Go to Settings",
-                                icon = Icons.Default.Delete
-                            ),
-                            MenuItem(
-                                id = "Login",
-                                title = "Login",
-                                contentDescription = "Login",
-                                icon = Icons.Default.Lock
-                            ),
-
-                            ),
-                        onItemClick = {
-                            if (it.title == "Login") {
-                                signIn()
-                            }
-
-        }
-
-
-                    Column() {
-
-                        val currentDateAndTime = getCurrentDateAndTime()
-
-                        Text(
-                            text = currentDateAndTime,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(60.dp)
-                                .fillMaxWidth()
-                                .border(1.dp, Color.DarkGray, shape = RoundedCornerShape(40)),
-                            textAlign = TextAlign.Center
-
-                        )
-                        Column() {
-                            Text(
-                                text = stringResource(id = R.string.TodaysWorkout),
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(3.dp),
-                                textDecoration = TextDecoration.Underline
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .background(MaterialTheme.colors.primary)
-                                .size(600.dp, 100.dp)
-                                .drawBehind {
-                                    val borderSize = 4.dp.toPx()
-                                    val y = size.height - borderSize / 2
-                                    drawLine(
-                                        color = Color.DarkGray,
-                                        start = Offset(0f, y),
-                                        end = Offset(size.width, y),
-                                        strokeWidth = borderSize
-                                    )
-                                }
-                                .fillMaxWidth()
-                                .clip(shape = RoundedCornerShape(70)),
-
-
-                            )
-
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Button(
-                                onClick = {
-                                    onNavigation()
-                                },
-                                modifier = Modifier.padding(12.dp),
-
-                                shape = RoundedCornerShape(70)
-
-                            ) { Text(text = stringResource(id = R.string.MyWorkout)) }
-
-                            Button(
-                                onClick = {
-                                onNavigation()
-                                },
-                                modifier = Modifier.padding(12.dp),
-                                shape = RoundedCornerShape(70)
-                            ) { Text(text = stringResource(id = R.string.MyGroups)) }
-
-                        }
-                        Text(
-                            text = stringResource(id = R.string.MyProgress),
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .width(1000.dp),
-                            textAlign = TextAlign.Center
-
-                        )
-                        Text(
-                            text = stringResource(id = R.string.Goals),
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            textDecoration = TextDecoration.Underline,
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .width(1000.dp),
-                            textAlign = TextAlign.Center
-
-                        )
-                        Box(
-                            modifier = Modifier
-                                .background(MaterialTheme.colors.primary)
-                                .size(400.dp, 100.dp)
-                                .drawBehind {
-                                    val borderSize = 4.dp.toPx()
-                                    val y = size.height - borderSize / 2
-                                    drawLine(
-                                        color = Color.DarkGray,
-                                        start = Offset(0f, y),
-                                        end = Offset(size.width, y),
-                                        strokeWidth = borderSize
-                                    )
-                                }
-                                .fillMaxWidth()
-                                .clip(shape = RoundedCornerShape(70)),
-
-                            )
-
+                AppBar {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
                     }
 
+                }
+
+            },
+            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+            drawerContent = {
+                DrawerHeader("")
+                // Items within the open drawer
+                DrawerBody(
+                    items = listOf(
+                        MenuItem(
+                            id = "Home",
+                            title = "Home",
+                            contentDescription = "Go to Home Screen",
+                            icon = Icons.Default.Home
+                        ),
+                        MenuItem(
+                            id = "Profile",
+                            title = "Profile",
+                            contentDescription = "Go to Profile Page",
+                            icon = Icons.Default.Person
+                        ),
+                        MenuItem(
+                            id = "Settings",
+                            title = "Settings",
+                            contentDescription = "Go to Settings",
+                            icon = Icons.Default.Delete
+                        ),
+                        MenuItem(
+                            id = "Login",
+                            title = "Login",
+                            contentDescription = "Login",
+                            icon = Icons.Default.Lock
+                        ),
+
+                        ),
+                    onItemClick = {
+                        if (it.title == "Login") {
+                            signIn()
+                        }
+
+                        println("Clicked on ${it.title}")
+                    }
+                )
+            },
+            content = {
+                Column() {
+                    Text(
+                        text = stringResource(id = R.string.Hello),
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .width(1000.dp),
+                        textAlign = TextAlign.Center
+
+                    )
+                }
+
+                Column() {
+
+                    val currentDateAndTime = getCurrentDateAndTime()
+
+                    Text(
+                        text = currentDateAndTime,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(60.dp)
+                            .fillMaxWidth()
+                            .border(1.dp, Color.DarkGray, shape = RoundedCornerShape(40)),
+                        textAlign = TextAlign.Center
+
+                    )
+                    Column() {
+                        Text(
+                            text = stringResource(id = R.string.TodaysWorkout),
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(3.dp),
+                            textDecoration = TextDecoration.Underline
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .background(MaterialTheme.colors.primary)
+                            .size(600.dp, 100.dp)
+                            .drawBehind {
+                                val borderSize = 4.dp.toPx()
+                                val y = size.height - borderSize / 2
+                                drawLine(
+                                    color = Color.DarkGray,
+                                    start = Offset(0f, y),
+                                    end = Offset(size.width, y),
+                                    strokeWidth = borderSize
+                                )
+                            }
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(70)),
+
+
+                        )
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            onClick = {
+
+                            },
+                            modifier = Modifier.padding(12.dp),
+
+                            shape = RoundedCornerShape(70)
+
+                        ) { Text(text = stringResource(id = R.string.MyWorkout)) }
+
+                        Button(
+                            onClick = {
+
+                            },
+                            modifier = Modifier.padding(12.dp),
+                            shape = RoundedCornerShape(70)
+                        ) { Text(text = stringResource(id = R.string.MyGroups)) }
+
+                    }
+                    Text(
+                        text = stringResource(id = R.string.MyProgress),
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .width(1000.dp),
+                        textAlign = TextAlign.Center
+
+                    )
+                    Text(
+                        text = stringResource(id = R.string.Goals),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .width(1000.dp),
+                        textAlign = TextAlign.Center
+
+                    )
+                    Box(
+                        modifier = Modifier
+                            .background(MaterialTheme.colors.primary)
+                            .size(400.dp, 100.dp)
+                            .drawBehind {
+                                val borderSize = 4.dp.toPx()
+                                val y = size.height - borderSize / 2
+                                drawLine(
+                                    color = Color.DarkGray,
+                                    start = Offset(0f, y),
+                                    end = Offset(size.width, y),
+                                    strokeWidth = borderSize
+                                )
+                            }
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(70)),
+
+                        )
 
                 }
+            },
+        )
+
 
     }
 
     @Composable
-    fun UserSpinner (users: List<User>){
-        var userText by remember{ mutableStateOf("User Collection")}
-        var expanded by remember { mutableStateOf(false)}
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+    fun UserSpinner(users: List<User>) {
+        var userText by remember { mutableStateOf("User Collection") }
+        var expanded by remember { mutableStateOf(false) }
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Row(Modifier
                 .padding(24.dp)
                 .clickable {
@@ -336,172 +335,23 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
                 .padding(8.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Text(text = userText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
-                DropdownMenu(expanded = expanded, onDismissRequest = {expanded = false}) {
-                    users.forEach {
-                        singleUser -> DropdownMenuItem(onClick = {
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    users.forEach { singleUser ->
+                        DropdownMenuItem(onClick = {
                             expanded = false
-                        userText = singleUser.nameToString()
-                        selectedUser = singleUser
-                    }){
+                            userText = singleUser.nameToString()
+                            selectedUser = singleUser
+                        }) {
                             Text(text = singleUser.toString())
+                        }
                     }
-                    }
                 }
             }
         }
     }
-
-    @Composable
-    fun GroupPage(name: String, users: List<User> = ArrayList<User>()) {
-        val context = LocalContext.current
-        val loadingGroup = stringResource(R.string.loading_group)
-        
-        Column() {
-            Text(
-                text = "$name's Groups"
-            )
-            UserSpinner(users = users)
-
-            // TODO: Create buttons based on groups the user is in
-            //Sample Button 1
-            Button(
-                onClick = {
-                    Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
-
-                },
-                content = {
-                    Text(text = "Group 1")
-                }
-            )
-            //Sample Button 2
-            Button(
-                onClick = {
-                    Toast.makeText(context, "$loadingGroup", Toast.LENGTH_LONG).show()
-                },
-                content = {
-                    Text(text = "Group 2")
-                }
-            )
-        }
-
-    }
-    @Composable
-    fun ProfilePage( string: String?,onNavigation:() -> Unit) {
-
-
-        val workouts = listOf(
-            Workout(
-                name = "Chest and Triceps",
-                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
-            ),
-            Workout(
-                name = "Back and Biceps",
-                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
-            ),
-            Workout(
-                name = "Leg Day",
-                exercises = listOf("Squats", "Leg Press", "Calf Raises")
-            )
-        )
-        val goals = listOf(
-            Goal(
-                name = "Gain 10kg",
-                progress = "30"
-            ),
-            Goal(
-                name = "Build Core Strength",
-                progress = "60"
-            ),
-            Goal(
-                name = "Gain 3kg of muscle",
-                progress = "99"
-            )
-        )
-        WorkoutAppTheme {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background
-            ) {
-                Column {
-
-                    UserProfile(
-                        username = "Pratik",
-                        height = "167cm",
-                        weight = "57kg",
-                        bmi = "21.8",
-                        goals = goals,
-                        workouts = workouts
-                    )
-                }
-            }
-        }
-    }
-    @Composable
-    fun RecordWorkout(onNavigation:() -> Unit) {
-        var Name by remember { mutableStateOf("") }
-        var Sets by remember { mutableStateOf("") }
-        var Reps by remember { mutableStateOf("") }
-        var Time by remember { mutableStateOf("") }
-        val context = LocalContext.current
-        Column (
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            Text(
-                text = "Record Workout",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            androidx.compose.material3.OutlinedTextField(
-                value = Name,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { Name = it },
-                label = { Text(stringResource(R.string.workoutName)) })
-            androidx.compose.material3.OutlinedTextField(
-                value = Reps,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { Reps = it },
-                label = { Text(stringResource(R.string.Reps)) })
-            androidx.compose.material3.OutlinedTextField(
-                value = Sets,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { Sets = it },
-                label = { Text(stringResource(R.string.Sets)) })
-            androidx.compose.material3.OutlinedTextField(
-                value = Time,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { Time = it },
-                label = { Text(stringResource(R.string.Time)) })
-
-            Button(
-                onClick = {
-                    Toast.makeText(context, "$Name $Sets $Reps $Time", Toast.LENGTH_LONG).show()
-                })
-            {
-                Text(text = "Save")
-            }
-
-            Button(
-                onClick = {
-                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-                })
-            {
-                Text(text = "Cancel")
-            }
-        }
-    }
-
     data class CollapsableSection(val title: String, val rows: List<String>)
 
     @Composable
@@ -586,14 +436,15 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
         this.signInResult(res)
     }
 
-
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
             firebaseUser = FirebaseAuth.getInstance().currentUser
             firebaseUser?.let {
-                val user = User(it.uid, "","", "", "", "",
-                    arrayOf(""), "", "", "", "")
+                val user = User(
+                    it.uid, "", "", "", "", "",
+                    arrayOf(""), "", "", "", ""
+                )
                 viewModel.user = user
                 viewModel.saveUser()
                 viewModel.listenToUserWorkout()
@@ -603,15 +454,11 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
         }
 
     }
-
-
     @Preview(showBackground = true)
     @Composable
-    fun MainPage() {
+    fun MainPagePreview() {
         WorkoutAppTheme {
-            MainPage(
-
-            )
+            MainPage()
             MyWorkout(
                 sections = listOf(
                     CollapsableSection(
@@ -641,3 +488,4 @@ val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed
     }
 
 }
+
