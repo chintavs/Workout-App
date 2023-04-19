@@ -15,11 +15,20 @@
         android:theme="@style/Theme.WorkoutApp"
         tools:targetApi="31">
         <activity
+            android:name=".RecordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_record"
+            android:theme="@style/Theme.WorkoutApp" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_record"
             android:theme="@style/Theme.WorkoutApp" />
-
+        <activity
+            android:name=".WorkoutActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.WorkoutApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +38,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </application>
-    </manifest>
+        </activity>
+    </application>
 
-
+</manifest>
