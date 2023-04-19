@@ -13,4 +13,8 @@ data class Group(var groupName: String, var groupMembers: Array<User>){
         //Group Members: $groupMembersStr
         return "Group Name: $groupName\nGroup Members: $groupMembersStr"
     }
+
+    fun nameToString(): String {
+        return "$groupName"
+    }
 }
