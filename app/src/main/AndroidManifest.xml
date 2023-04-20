@@ -38,6 +38,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.WorkoutApp" />
+        <activity
+            android:name=".GroupsActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.WorkoutApp" />
         <meta-data
             android:name="android.app.lib_name"
             android:value="" />
