@@ -28,8 +28,9 @@ class WorkoutService {
             suspend fun nested() : List<WorkoutRec>? {
                 return withContext(Dispatchers.IO) {
                     val service = RetrofitClientInstance.retrofitInstance?.create(IExerciseDAO::class.java)
-                    val plants = async { service?.getAllExercises(it) }
-                    return@withContext plants.await()?.awaitResponse()?.body()
+                    val workouts = async { service?.getAllExercises(it) }
+                    var result = workouts.await()?.awaitResponse()?.body()
+                    return@withContext result
                 }
         }
     }
