@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 import android.os.Bundle
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -12,18 +13,21 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
-import kotlinx.coroutines.launch
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             WorkoutAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -95,65 +99,13 @@ fun UserProfile(
     modifier: Modifier = Modifier,
 ) {
 
+
+
     Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
-        Scaffold(
 
-            scaffoldState = scaffoldState,
-
-            topBar = {
-
-                AppBar {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-
-                }
-
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                DrawerHeader("")
-                DrawerBody(
-                    items = listOf(
-                        MenuItem(
-                            id = "Home",
-                            title = "Home",
-                            contentDescription = "Go to Home com.example.workoutapp.Screen",
-                            icon = Icons.Default.Home
-                        ),
-                        MenuItem(
-                            id = "Profile",
-                            title = "Profile",
-                            contentDescription = "Go to Profile Page",
-                            icon = Icons.Default.Person
-                        ),
-                        MenuItem(
-                            id = "Settings",
-                            title = "Settings",
-                            contentDescription = "Go to Settings",
-                            icon = Icons.Default.Settings
-                        ),
-
-                        MenuItem(
-                            id = "Login",
-                            title = "Login",
-                            contentDescription = "Login",
-                            icon = Icons.Default.Lock
-                        ),
-                    ),
-                    onItemClick = {
-
-                    }
-                )
-
-
-            },
-            content = {
                 Column(
                     modifier = modifier
                         .padding(16.dp)
@@ -208,11 +160,8 @@ fun UserProfile(
 
                 }
             }
-        )
-
 
     }
-}
 
 /* Composable function GoalItem that displays a single goal item in a Column layout. The function takes in a
    Goal data class object as a parameter, which contains the name of the goal and its progress as a percentage. */
@@ -222,6 +171,7 @@ fun UserProfile(
 
 /* The progress parameter is converted to a Float and divided by 100 to display the progress as a value
    between 0 and 1 for the LinearProgressIndicator. */
+
 
 data class Goal(val name: String, val progress: String)
 @Composable
@@ -302,7 +252,7 @@ fun ExerciseItem(exercise: String) {
    workouts and three goals, each with their name and progress. The preview showcases how the UserProfile
    composable arranges the user's information and goals and workouts in a visually appealing manner. */
 
-@Preview(showBackground = true)
+
 @Composable
 
 fun ProfilePage() {
