@@ -278,7 +278,7 @@ class MainActivity : ComponentActivity() {
 
                             shape = RoundedCornerShape(70)
 
-                        ) { Text(text = stringResource(id = R.string.MyRecord)) }
+                        ) { Text(text = stringResource(id = R.string.MyGroups)) }
 
                     }
                     Text(
@@ -295,11 +295,8 @@ class MainActivity : ComponentActivity() {
                         text = stringResource(id = R.string.Goals),
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .width(1000.dp),
-                        textAlign = TextAlign.Center
+                        modifier = Modifier.padding(3.dp),
+                        textDecoration = TextDecoration.Underline
 
                     )
                     Box(
@@ -325,7 +322,7 @@ class MainActivity : ComponentActivity() {
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
                                 .align(Alignment.Center),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Left
                         )
                         Text(
                             text = "$calorieGoal",
