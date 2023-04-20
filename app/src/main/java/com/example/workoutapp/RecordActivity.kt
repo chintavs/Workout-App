@@ -68,11 +68,11 @@ fun RecordWorkout(
         modifier = Modifier
             .padding(20.dp)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.Record_Title),
+            text = "Record Workout",
             style = MaterialTheme.typography.h4,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
