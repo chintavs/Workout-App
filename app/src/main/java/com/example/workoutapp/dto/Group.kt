@@ -23,5 +23,7 @@ data class Group(var groupName: String, var groupMembers: Array<User>){
         for (x in groupMembers){
             groupMembersStr += "$x\n"
         }
+
+        return groupMembersStr
     }
 }
