@@ -13,4 +13,17 @@ data class Group(var groupName: String, var groupMembers: Array<User>){
         //Group Members: $groupMembersStr
         return "Group Name: $groupName\nGroup Members: $groupMembersStr"
     }
+
+    fun nameToString(): String {
+        return "$groupName"
+    }
+
+    fun membersToString(): String {
+        var groupMembersStr: String = ""
+        for (x in groupMembers){
+            groupMembersStr += "$x\n"
+        }
+
+        return groupMembersStr
+    }
 }
