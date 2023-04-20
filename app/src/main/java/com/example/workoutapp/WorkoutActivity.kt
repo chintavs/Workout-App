@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
@@ -101,11 +102,11 @@ fun MyWorkouts(
                     }
                 }
             }
-
+        )
 
 
     }
-
+}
 
 /* Composable function MyWorkoutExpandableItem that displays a single workout item in a Column layout. The function takes in
    a MyWorkoutDay data class object as a parameter, which contains the Day and a list of exercises. */

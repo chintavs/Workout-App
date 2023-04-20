@@ -1,7 +1,6 @@
 package com.example.workoutapp
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -206,6 +205,12 @@ class MainActivity : ComponentActivity() {
                 DrawerBody(
                     items = listOf(
                         MenuItem(
+                            id = "Home",
+                            title = "Home",
+                            contentDescription = "Go to Home Screen",
+                            icon = Icons.Default.Home
+                        ),
+                        MenuItem(
                             id = "Profile",
                             title = "Profile",
                             contentDescription = "Go to Profile Page",
@@ -254,7 +259,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-
                 Column() {
 
                     val currentDateAndTime = getCurrentDateAndTime()
@@ -297,15 +301,7 @@ class MainActivity : ComponentActivity() {
                             .clip(shape = RoundedCornerShape(70)),
 
 
-                        ) {
-                        Text(
-                            text = "$workouts",
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-
                         )
-                    }
 
 
                     Row(
@@ -315,14 +311,14 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Button(
                             onClick = {
-                                val navigate = Intent(this@MainActivity, WorkoutActivity::class.java)
-                                startActivity(navigate)
+
                             },
                             modifier = Modifier.padding(12.dp),
 
                             shape = RoundedCornerShape(70)
 
                         ) { Text(text = stringResource(id = R.string.MyWorkout)) }
+
                         Button(
                             onClick = {
                                 val navigate = Intent(this@MainActivity, RecordActivity::class.java)
@@ -347,8 +343,11 @@ class MainActivity : ComponentActivity() {
                         text = stringResource(id = R.string.Goals),
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(3.dp),
-                        textDecoration = TextDecoration.Underline
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .width(1000.dp),
+                        textAlign = TextAlign.Center
 
                     )
                     Box(
@@ -368,22 +367,7 @@ class MainActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .clip(shape = RoundedCornerShape(70)),
 
-                        ){
-                        Text(
-                            text = "$goals",
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            textAlign = TextAlign.Left
                         )
-                        Text(
-                            text = "$calorieGoal",
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            textAlign = TextAlign.Center
-                        )
-                    }
 
                 }
             },
@@ -792,7 +776,6 @@ class MainActivity : ComponentActivity() {
         }
 
     }
-
     @Preview(showBackground = true)
     @Composable
     fun MainPagePreview() {
