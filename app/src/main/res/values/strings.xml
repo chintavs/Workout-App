@@ -6,6 +6,7 @@
     <string name="Sets">Sets</string>
     <string name="Reps">Reps</string>
     <string name="Day">Day</string>
+    <string name="Name">Name</string>
 
     <string name="MyProgress">My Progress</string>
     <string name="MyGroups">My Groups</string>
@@ -13,6 +14,7 @@
     <string name="TodaysWorkout">Today\'s Workout:</string>
     <string name="Hello">Hello !</string>
     <string name="Goals">Goals</string>
-    <string name="loading_group">Loading Group...</string>
+    <string name="loading_group">Loading Group…</string>
+    <string name="Record_Title">Record Workout</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,11 +12,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
@@ -55,7 +58,7 @@ class WorkoutActivity : ComponentActivity() {
 /* The user can add exercises to their routines through the plus button at the bottom. */
 
 @Composable
-fun MyWorkouts(
+private fun MyWorkouts(
     myWorkoutWeek: List<MyWorkoutDay>,
     modifier: Modifier = Modifier,
 ) {
@@ -65,6 +68,8 @@ fun MyWorkouts(
     ){
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
@@ -140,6 +145,8 @@ fun MyWorkouts(
 
                     IconButton(
                         onClick = {
+                            val intent = Intent(context, RecordActivity::class.java)
+                            startActivity(context, intent, null)
                         })
                     {
                         Icon(imageVector = Icons.Filled.AddCircle,
@@ -167,7 +174,7 @@ fun MyWorkouts(
 
 data class MyWorkoutDay(val day: String, val exercises: List<String>)
 @Composable
-fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
+private fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(

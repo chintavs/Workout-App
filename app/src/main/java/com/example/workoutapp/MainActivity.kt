@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -50,15 +51,23 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.PopupProperties
 import com.example.workoutapp.dto.Group
+import com.example.workoutapp.dto.WorkoutRec
+import com.example.workoutapp.ui.theme.Teal200
 
 
 class MainActivity : ComponentActivity() {
-
-
+    var selectedWorkout: WorkoutRec = WorkoutRec()
+    var inputName: String = ""
     private var selectedGroup: Group? = null
     val MaterialIconDimension = 24f
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
@@ -293,7 +302,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Button(
                             onClick = {
-
                             },
                             modifier = Modifier.padding(12.dp),
 
@@ -407,70 +415,318 @@ class MainActivity : ComponentActivity() {
         }
 
     }
-    data class CollapsableSection(val title: String, val rows: List<String>)
+
+    data class MyWorkoutDay(val day: String, val exercises: List<String>)
 
     @Composable
-    fun MyWorkout(sections: List<CollapsableSection>) {
-        val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
+    fun MyWorkouts(
+        myWorkoutWeek: List<MyWorkoutDay>,
+        modifier: Modifier = Modifier,
+    ) {
+        Column(
+            modifier = Modifier,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ){
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            val context = LocalContext.current
 
-        Column (
+            Scaffold(
+                scaffoldState = scaffoldState,
+                topBar = {
+
+                    AppBar {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+
+                    }
+
+                },
+                drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                drawerContent = {
+                    DrawerHeader("")
+                    DrawerBody(
+                        items = listOf(
+                            MenuItem(
+                                id = "Home",
+                                title = "Home",
+                                contentDescription = "Go to Home com.example.workoutapp.Screen",
+                                icon = Icons.Default.Home
+                            ),
+                            MenuItem(
+                                id = "Profile",
+                                title = "Profile",
+                                contentDescription = "Go to Profile Page",
+                                icon = Icons.Default.Person
+                            ),
+                            MenuItem(
+                                id = "Settings",
+                                title = "Settings",
+                                contentDescription = "Go to Settings",
+                                icon = Icons.Default.Settings
+                            ),
+
+                            MenuItem(
+                                id = "Login",
+                                title = "Login",
+                                contentDescription = "Login",
+                                icon = Icons.Default.Lock
+                            ),
+                        ),
+                        onItemClick = {
+
+                        }
+                    )
+
+
+                },
+
+                content = {
+                    Column(
+                        modifier = modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "My Workout Week",
+                            style = MaterialTheme.typography.h4,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        for (myWorkoutDay in myWorkoutWeek) {
+                            MyWorkoutExpandableItem(myWorkoutDay)
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        IconButton(
+                            onClick = {
+                                val intent = Intent(context, RecordActivity::class.java)
+                                startActivity(intent)
+                            })
+                        {
+                            Icon(imageVector = Icons.Filled.AddCircle,
+                                contentDescription = null,
+                                modifier = Modifier.size(50.dp),
+                                tint = Teal200)
+                        }
+                    }
+                }
+            )
+
+
+        }
+    }
+
+    @Composable
+    fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
+        var expanded by remember { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+            ) {
+                Text(text = myWorkoutDay.day, fontWeight = FontWeight.Bold)
+                Icon(
+                    if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.secondary,
+                )
+            }
+            if (expanded) {
+                for (exercise in myWorkoutDay.exercises) {
+                    MyExerciseItem(exercise)
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun MyExerciseItem(exercise: String) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = exercise,
+                modifier = Modifier.padding(start = 16.dp),
+                fontSize = 13.sp
+            )
+        }
+    }
+
+    @Composable
+    fun RecordWorkout(
+        workouts: List<WorkoutRec>,
+        selectedWorkout: WorkoutRec = WorkoutRec("")
+    ) {
+        var name by remember(selectedWorkout.workoutName) { mutableStateOf(selectedWorkout.workoutName) }
+        var sets by remember { mutableStateOf("") }
+        var reps by remember { mutableStateOf("") }
+        var day by remember { mutableStateOf("") }
+        val context = LocalContext.current
+
+        Column(
             modifier = Modifier
-                .padding(20.dp)
                 .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "My Workouts",
+                text = stringResource(R.string.Record_Title),
                 style = MaterialTheme.typography.h4,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-        }
+            TextFieldWithDropdownUsage(
+                dataIn = workouts,
+                label = stringResource(R.string.Name),
+                selectedWorkout = selectedWorkout
+            )
+            androidx.compose.material3.OutlinedTextField(
+                value = reps,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { reps = it },
+                label = { Text(stringResource(R.string.Reps)) })
+            androidx.compose.material3.OutlinedTextField(
+                value = sets,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { sets = it },
+                label = { Text(stringResource(R.string.Sets)) })
+            androidx.compose.material3.OutlinedTextField(
+                value = day,
+                modifier = Modifier
+                    .padding(10.dp),
+                onValueChange = { day = it },
+                label = { Text(stringResource(R.string.Day)) })
 
-        LazyColumn(
-            modifier = Modifier
-                .padding(75.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            userScrollEnabled = true
-        ) {
-            sections.forEachIndexed { i, dataItem ->
-                val collapsed = collapsedState[i]
-                item(key = "header_$i") {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-                                collapsedState[i] = !collapsed
-                            }
-                    ) {
-                        Text(
-                            dataItem.title,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                                .weight(1f)
-                        )
-                    }
-                    Divider()
+            Row(modifier = Modifier.padding(vertical = 60.dp)) {
+                IconButton(
+                    onClick = {
+                        Toast.makeText(context, "Workout Saved", Toast.LENGTH_LONG).show()
+                    },
+                    modifier = Modifier.padding(horizontal = 40.dp)
+                )
+                {
+                    Icon(
+                        imageVector = Icons.Outlined.CheckCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                    )
                 }
-                if (!collapsed) {
-                    items(dataItem.rows) { row ->
-                        Row {
-                            Spacer(modifier = Modifier.size(MaterialIconDimension.dp))
-                            Text(
-                                row,
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp)
+
+                IconButton(
+                    onClick = {
+                        Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                    },
+                    modifier = Modifier.padding(horizontal = 40.dp)
+                )
+                {
+                    Icon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp),
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun TextFieldWithDropdown(
+        modifier: Modifier = Modifier,
+        value: TextFieldValue,
+        setValue: (TextFieldValue) -> Unit,
+        onDismissRequest: () -> Unit,
+        dropDownExpanded: Boolean,
+        list: List<WorkoutRec>,
+        label: String = ""
+    ) {
+        Box(modifier) {
+            androidx.compose.material3.OutlinedTextField(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .onFocusChanged { focusState ->
+                        if (!focusState.isFocused)
+                            onDismissRequest()
+                    },
+                value = value,
+                onValueChange = setValue,
+                label = { Text(label) },
+            )
+            DropdownMenu(
+                expanded = dropDownExpanded,
+                properties = PopupProperties(
+                    focusable = false,
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true
+                ),
+                onDismissRequest = onDismissRequest
+            ) {
+                list.forEach { text ->
+                    DropdownMenuItem(onClick = {
+                        setValue(
+                            TextFieldValue(
+                                text.toString(),
+                                TextRange(text.toString().length)
                             )
-                        }
-                        Divider()
+                        )
+                        selectedWorkout = text
+                    }) {
+                        Text(text = text.toString())
                     }
                 }
             }
         }
+    }
 
+
+    @Composable
+    fun TextFieldWithDropdownUsage(
+        dataIn: List<WorkoutRec>,
+        label: String = "",
+        selectedWorkout: WorkoutRec = WorkoutRec()
+    ) {
+
+        val dropDownOptions = remember { mutableStateOf(listOf<WorkoutRec>()) }
+        val textFieldValue =
+            remember(selectedWorkout.workoutName) { mutableStateOf(TextFieldValue(selectedWorkout.workoutName)) }
+        val dropDownExpanded = remember { mutableStateOf(false) }
+
+        fun onDropdownDismissRequest() {
+            dropDownExpanded.value = false
+        }
+
+        fun onValueChanged(value: TextFieldValue) {
+            inputName = value.text
+            dropDownExpanded.value = true
+            textFieldValue.value = value
+            dropDownOptions.value = dataIn.filter {
+                it.toString().startsWith(value.text) && it.toString() != value.text
+            }.take(3)
+        }
+
+        TextFieldWithDropdown(
+            modifier = Modifier.width(300.dp),
+            value = textFieldValue.value,
+            setValue = ::onValueChanged,
+            onDismissRequest = ::onDropdownDismissRequest,
+            dropDownExpanded = dropDownExpanded.value,
+            list = dropDownOptions.value,
+            label = label
+        )
     }
 
     private fun signIn() {
@@ -509,32 +765,33 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
     @Preview(showBackground = true)
     @Composable
     fun MainPagePreview() {
         WorkoutAppTheme {
             MainPage()
-            MyWorkout(
-                sections = listOf(
-                    CollapsableSection(
-                        title = "Monday",
-                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+            MyWorkouts(
+                myWorkoutWeek = listOf(
+                    MyWorkoutDay(
+                        day = "Monday",
+                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                     ),
-                    CollapsableSection(
-                        title = "Tuesday",
-                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    MyWorkoutDay(
+                        day = "Tuesday",
+                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                     ),
-                    CollapsableSection(
-                        title = "Wednesday",
-                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    MyWorkoutDay(
+                        day = "Wednesday",
+                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                     ),
-                    CollapsableSection(
-                        title = "Thursday",
-                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    MyWorkoutDay(
+                        day = "Thursday",
+                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                     ),
-                    CollapsableSection(
-                        title = "Friday",
-                        rows = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
+                    MyWorkoutDay(
+                        day = "Friday",
+                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
                     ),
                 )
             )
