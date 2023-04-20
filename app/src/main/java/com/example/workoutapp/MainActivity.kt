@@ -81,13 +81,63 @@ class MainActivity : ComponentActivity() {
             groups.add(
                 Group(
                     groupName = "Cool Group",
-                    groupMembers = arrayOf()
+                    groupMembers = arrayOf(
+                        User(
+                            displayName = "daltonco",
+                            firstName = "Colton",
+                            lastName = "Dalton",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        ),
+                        User(
+                            displayName = "arthursr01",
+                            firstName = "Sean",
+                            lastName = "Arthur",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        )
+                    )
                 )
             )
             groups.add(
                 Group(
                     groupName = "Dev Group",
-                    groupMembers = arrayOf()
+                    groupMembers = arrayOf(
+                        User(
+                            displayName = "kooncewc",
+                            firstName = "William",
+                            lastName = "Koonce",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        ),
+                        User(
+                            displayName = "chintavs",
+                            firstName = "Vishvak",
+                            lastName = "Chintalapalli",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        )
+                    )
                 )
             )
             // End mock groups

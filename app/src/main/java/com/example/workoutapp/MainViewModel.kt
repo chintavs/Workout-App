@@ -3,6 +3,7 @@ package com.example.workoutapp
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.workoutapp.dto.Group
 import com.example.workoutapp.dto.User
 import com.example.workoutapp.dto.WorkoutRec
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,8 @@ class MainViewModel() : ViewModel() {
     var user: User? = null
     private var userWorkout: MutableLiveData<List<WorkoutRec>> = MutableLiveData<List<WorkoutRec>>()
 
+    var groups: MutableLiveData<List<Group>> = MutableLiveData<List<Group>>()
+
     private lateinit var firestore: FirebaseFirestore
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private var userWork : User? = null
@@ -24,12 +27,34 @@ class MainViewModel() : ViewModel() {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
         listenToUserWorkout()
+        listenToGroups()
+    }
+
+    private fun listenToGroups() {
+        firestore.collection("groups").addSnapshotListener{
+            //Error handling
+                snapshot, e ->
+            if(e != null){
+                Log.w("Listen Failed", e)
+                return@addSnapshotListener
+            }
+            // if we reached this point, there was not an error
+            snapshot?.let{
+                val allGroups = ArrayList<Group>()
+                val documents = snapshot.documents
+                documents.forEach{
+                    val group = it.toObject(Group::class.java)
+                    group?.let{
+                        allGroups.add(it)
+                    }
+                }
+                groups.value = allGroups
+            }
+        }
     }
 
 
-
-
-     fun listenToUserWorkout() {
+    fun listenToUserWorkout() {
         user?.let {
                 user ->
             firestore.collection("users").document(user.uid).collection("userWorkout").addSnapshotListener {

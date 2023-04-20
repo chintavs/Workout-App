@@ -17,13 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.dto.Group
+import com.example.workoutapp.dto.User
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.ArrayList
 
 
 class GroupsActivity : ComponentActivity() {
 
     private var selectedGroup: Group? = null
+    private val viewModel: MainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +38,66 @@ class GroupsActivity : ComponentActivity() {
             groups.add(
                 Group(
                     groupName = "Cool Group",
-                    groupMembers = arrayOf()
+                    groupMembers = arrayOf(
+                        User(
+                            displayName = "daltonco",
+                            firstName = "Colton",
+                            lastName = "Dalton",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        ),
+                        User(
+                            displayName = "arthursr01",
+                            firstName = "Sean",
+                            lastName = "Arthur",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        )
+                    )
                 )
             )
             groups.add(
                 Group(
                     groupName = "Dev Group",
-                    groupMembers = arrayOf()
+                    groupMembers = arrayOf(
+                        User(
+                            displayName = "kooncewc",
+                            firstName = "William",
+                            lastName = "Koonce",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                        ),
+                        User(
+                            displayName = "chintavs",
+                            firstName = "Vishvak",
+                            lastName = "Chintalapalli",
+                            calorieGoal = "10",
+                            workoutsCompleted = "10",
+                            workoutDate = "",
+                            height = "10",
+                            weight = "10",
+                            bmi = "10",
+                            friendList = arrayOf("")
+                    )
+                )
                 )
             )
             // End mock groups
-
             WorkoutAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
