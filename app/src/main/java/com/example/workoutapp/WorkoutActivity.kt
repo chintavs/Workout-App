@@ -12,13 +12,17 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
@@ -34,15 +38,39 @@ class WorkoutActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Column {
-                        val workoutweek = listOf(
+                        val workoutWeek = listOf(
                             MyWorkoutDay(
-                                day = "",
-                                exercises = listOf("")
+                                day = "Saturday",
+                                exercises = listOf("Squats", "Leg Press", "Calf Raises")
+                            ),
+                            MyWorkoutDay(
+                                day = "Monday",
+                                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+                            ),
+                            MyWorkoutDay(
+                                day = "Tuesday",
+                                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+                            ),
+                            MyWorkoutDay(
+                                day = "Wednesday",
+                                exercises = listOf("Squats", "Leg Press", "Calf Raises")
+                            ),
+                            MyWorkoutDay(
+                                day = "Thursday",
+                                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+                            ),
+                            MyWorkoutDay(
+                                day = "Friday",
+                                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+                            ),
+                            MyWorkoutDay(
+                                day = "Saturday",
+                                exercises = listOf("Squats", "Leg Press", "Calf Raises")
                             )
                         )
 
                         MyWorkouts(
-                            myWorkoutWeek = workoutweek
+                            myWorkoutWeek = workoutWeek
                         )
                     }
                 }
@@ -62,48 +90,48 @@ fun MyWorkouts(
     myWorkoutWeek: List<MyWorkoutDay>,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
 
-                Column(
-                    modifier = modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "My Workout Week",
-                        style = MaterialTheme.typography.h4,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
+            Column(
+                modifier = modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "My Workout Week",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(20.dp))
 
-                    for (myWorkoutDay in myWorkoutWeek) {
-                        MyWorkoutExpandableItem(myWorkoutDay)
-                        Spacer(modifier = Modifier.height(20.dp))
-                    }
+                for (myWorkoutDay in myWorkoutWeek) {
+                    MyWorkoutExpandableItem(myWorkoutDay)
                     Spacer(modifier = Modifier.height(20.dp))
+                }
+                Spacer(modifier = Modifier.height(20.dp))
 
-                    IconButton(
-                        onClick = {
-                        })
-                    {
-                        Icon(imageVector = Icons.Filled.AddCircle,
-                            contentDescription = null,
-                            modifier = Modifier.size(50.dp),
-                            tint = Teal200)
-                    }
+                IconButton(
+                    onClick = {
+                        val intent = Intent(context, RecordActivity::class.java)
+                        startActivity(context, intent, null)
+                    })
+                {
+                    Icon(imageVector = Icons.Filled.AddCircle,
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp),
+                        tint = Teal200)
                 }
             }
-
-
-
+        }
     }
-
 
 /* Composable function MyWorkoutExpandableItem that displays a single workout item in a Column layout. The function takes in
    a MyWorkoutDay data class object as a parameter, which contains the Day and a list of exercises. */
@@ -162,9 +190,10 @@ fun MyExerciseItem(exercise: String) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 
-fun WorkoutPreview(navController: NavHostController) {
+fun WorkoutPreview() {
     val workoutWeek = listOf(
         MyWorkoutDay(
             day = "Saturday",
