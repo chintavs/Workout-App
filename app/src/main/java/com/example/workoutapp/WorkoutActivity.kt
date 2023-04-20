@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import androidx.core.content.ContextCompat.startActivity
 import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import kotlinx.coroutines.launch
@@ -59,7 +60,7 @@ class WorkoutActivity : ComponentActivity() {
 /* The user can add exercises to their routines through the plus button at the bottom. */
 
 @Composable
-private fun MyWorkouts(
+fun MyWorkouts(
     myWorkoutWeek: List<MyWorkoutDay>,
     modifier: Modifier = Modifier,
 ) {
@@ -118,7 +119,7 @@ private fun MyWorkouts(
 
 data class MyWorkoutDay(val day: String, val exercises: List<String>)
 @Composable
-private fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
+fun MyWorkoutExpandableItem(myWorkoutDay: MyWorkoutDay) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(

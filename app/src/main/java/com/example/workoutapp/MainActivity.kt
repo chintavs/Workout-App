@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -64,8 +65,6 @@ import com.example.workoutapp.ui.theme.Teal200
 class MainActivity : ComponentActivity() {
     var selectedWorkout: WorkoutRec = WorkoutRec()
     var inputName: String = ""
-
-
     private var selectedUser: User? = null
 
     private var selectedGroup: Group? = null
