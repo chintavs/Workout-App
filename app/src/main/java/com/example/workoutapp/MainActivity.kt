@@ -337,6 +337,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    @Composable
+    fun GroupPage(name: String, groups: List<Group> = ArrayList<Group>()) {
+        val context = LocalContext.current
+        val loadingGroup = stringResource(R.string.loading_group)
+
+        Column() {
+            Text(
+                text = "$name's Groups"
+            )
+            GroupSpinner(groups = groups)
+
+            selectedGroup?.let {
+                Text(
+                    text = it.membersToString()
+                )
+            }
+        }
+
+    }
     data class CollapsableSection(val title: String, val rows: List<String>)
 
     @Composable
