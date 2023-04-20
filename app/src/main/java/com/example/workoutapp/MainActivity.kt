@@ -53,12 +53,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.workoutapp.dto.Group
 
 
 class MainActivity : ComponentActivity() {
 
 
-    private var selectedUser: User? = null
+    private var selectedGroup: Group? = null
     val MaterialIconDimension = 24f
     private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
@@ -75,37 +76,21 @@ class MainActivity : ComponentActivity() {
                 viewModel.listenToUserWorkout()
             }
             // TODO:  Convert below mock data into parsed data
-            // Add mock users for GroupSpinner function
-            val users = ArrayList<User>()
-            users.add(
-                User(
-                    displayName = "daltonco",
-                    firstName = "Colton",
-                    lastName = "Dalton",
-                    calorieGoal = "10",
-                    workoutsCompleted = "10",
-                    workoutDate = "",
-                    height = "10",
-                    weight = "10",
-                    bmi = "10",
-                    friendList = arrayOf("")
+            // Add mock groups for GroupSpinner function
+            val groups = ArrayList<Group>()
+            groups.add(
+                Group(
+                    groupName = "Cool Group",
+                    groupMembers = arrayOf()
                 )
             )
-            users.add(
-                User(
-                    displayName = "arthursr01",
-                    firstName = "Sean",
-                    lastName = "Arthur",
-                    calorieGoal = "10",
-                    workoutsCompleted = "10",
-                    workoutDate = "",
-                    height = "10",
-                    weight = "10",
-                    bmi = "10",
-                    friendList = arrayOf("")
+            groups.add(
+                Group(
+                    groupName = "Dev Group",
+                    groupMembers = arrayOf()
                 )
             )
-            // End mock users
+            // End mock groups
             WorkoutAppTheme {
 
                 // A surface container using the 'background' color from the theme
@@ -323,8 +308,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun UserSpinner(users: List<User>) {
-        var userText by remember { mutableStateOf("User Collection") }
+    fun GroupSpinner(groups: List<Group>) {
+        var groupText by remember { mutableStateOf("Group Collection") }
         var expanded by remember { mutableStateOf(false) }
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Row(Modifier
@@ -336,21 +321,41 @@ class MainActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = userText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+                Text(text = groupText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    users.forEach { singleUser ->
+                    groups.forEach { singleGroup ->
                         DropdownMenuItem(onClick = {
                             expanded = false
-                            userText = singleUser.nameToString()
-                            selectedUser = singleUser
+                            groupText = singleGroup.nameToString()
+                            selectedGroup = singleGroup
                         }) {
-                            Text(text = singleUser.toString())
+                            Text(text = singleGroup.toString())
                         }
                     }
                 }
             }
         }
+    }
+
+    @Composable
+    fun GroupPage(name: String, groups: List<Group> = ArrayList<Group>()) {
+        val context = LocalContext.current
+        val loadingGroup = stringResource(R.string.loading_group)
+
+        Column() {
+            Text(
+                text = "$name's Groups"
+            )
+            GroupSpinner(groups = groups)
+
+            selectedGroup?.let {
+                Text(
+                    text = it.membersToString()
+                )
+            }
+        }
+
     }
     data class CollapsableSection(val title: String, val rows: List<String>)
 
