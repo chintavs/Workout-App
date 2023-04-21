@@ -4,15 +4,12 @@ package com.example.workoutapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -22,42 +19,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.ui.window.PopupProperties
 import com.example.workoutapp.data.Workout
+import com.example.workoutapp.dto.Group
 import com.example.workoutapp.dto.User
+import com.example.workoutapp.dto.WorkoutRec
+import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.window.PopupProperties
-import com.example.workoutapp.dto.Group
-import com.example.workoutapp.dto.WorkoutRec
-import com.example.workoutapp.ui.theme.Teal200
 
 
 class MainActivity : ComponentActivity() {
@@ -162,10 +152,6 @@ class MainActivity : ComponentActivity() {
             }
 
         }
-    }
-
-    private fun <E> MutableList<E>.add(element: MutableLiveData<List<E>>) {
-
     }
 
     private fun getCurrentDateAndTime(): String {
@@ -382,57 +368,6 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    @Composable
-    fun GroupSpinner(groups: List<Group>) {
-        var groupText by remember { mutableStateOf("Group Collection") }
-        var expanded by remember { mutableStateOf(false) }
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Row(Modifier
-                .padding(24.dp)
-                .clickable {
-                    expanded = !expanded
-                }
-                .padding(8.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = groupText, fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
-                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    groups.forEach { singleGroup ->
-                        DropdownMenuItem(onClick = {
-                            expanded = false
-                            groupText = singleGroup.nameToString()
-                            selectedGroup = singleGroup
-                        }) {
-                            Text(text = singleGroup.toString())
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun GroupPage(name: String, groups: List<Group> = ArrayList<Group>()) {
-        val context = LocalContext.current
-        val loadingGroup = stringResource(R.string.loading_group)
-
-        Column() {
-            Text(
-                text = "$name's Groups"
-            )
-            GroupSpinner(groups = groups)
-
-            selectedGroup?.let {
-                Text(
-                    text = it.membersToString()
-                )
-            }
-        }
-
-    }
-
     data class MyWorkoutDay(val day: String, val exercises: List<String>)
 
     @Composable
@@ -579,85 +514,6 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(start = 16.dp),
                 fontSize = 13.sp
             )
-        }
-    }
-
-    @Composable
-    fun RecordWorkout(
-        workouts: List<WorkoutRec>,
-        selectedWorkout: WorkoutRec = WorkoutRec("")
-    ) {
-        var name by remember(selectedWorkout.workoutName) { mutableStateOf(selectedWorkout.workoutName) }
-        var sets by remember { mutableStateOf("") }
-        var reps by remember { mutableStateOf("") }
-        var day by remember { mutableStateOf("") }
-        val context = LocalContext.current
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(R.string.Record_Title),
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            TextFieldWithDropdownUsage(
-                dataIn = workouts,
-                label = stringResource(R.string.Name),
-                selectedWorkout = selectedWorkout
-            )
-            androidx.compose.material3.OutlinedTextField(
-                value = reps,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { reps = it },
-                label = { Text(stringResource(R.string.Reps)) })
-            androidx.compose.material3.OutlinedTextField(
-                value = sets,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { sets = it },
-                label = { Text(stringResource(R.string.Sets)) })
-            androidx.compose.material3.OutlinedTextField(
-                value = day,
-                modifier = Modifier
-                    .padding(10.dp),
-                onValueChange = { day = it },
-                label = { Text(stringResource(R.string.Day)) })
-
-            Row(modifier = Modifier.padding(vertical = 60.dp)) {
-                IconButton(
-                    onClick = {
-                        Toast.makeText(context, "Workout Saved", Toast.LENGTH_LONG).show()
-                    },
-                    modifier = Modifier.padding(horizontal = 40.dp)
-                )
-                {
-                    Icon(
-                        imageVector = Icons.Outlined.CheckCircle,
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp)
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-                    },
-                    modifier = Modifier.padding(horizontal = 40.dp)
-                )
-                {
-                    Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp),
-                    )
-                }
-            }
         }
     }
 

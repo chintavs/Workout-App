@@ -36,8 +36,6 @@ class GroupsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-
-            // TODO:  Convert below mock data into parsed data
             // Add mock groups for GroupSpinner function
             val groups = ArrayList<Group>()
             groups.add(
