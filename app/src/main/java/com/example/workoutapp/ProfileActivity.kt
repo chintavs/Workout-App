@@ -1,5 +1,6 @@
 package com.example.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.workoutapp.ui.theme.Teal200
 
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 
