@@ -1,5 +1,6 @@
 package com.example.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.dto.Group
 import com.example.workoutapp.dto.User
+import com.example.workoutapp.ui.theme.Teal200
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.ArrayList
@@ -32,6 +35,7 @@ class GroupsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
 
             // TODO:  Convert below mock data into parsed data
             // Add mock groups for GroupSpinner function
@@ -184,6 +188,24 @@ class GroupsActivity : ComponentActivity() {
                 }
             }
 
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal =  170.dp, vertical = 0.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(
+                onClick = {
+                    val navigate = Intent(this@GroupsActivity, MainActivity::class.java)
+                    startActivity(navigate)
+                })
+            {
+                Icon(imageVector = Icons.Filled.Home,
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp),
+                    tint = Teal200
+                )
+            }
         }
     }
 }

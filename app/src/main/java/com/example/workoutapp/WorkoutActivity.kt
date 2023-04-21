@@ -37,6 +37,25 @@ class WorkoutActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal =  1.dp, vertical = 14.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        IconButton(
+                            onClick = {
+                                val navigate = Intent(this@WorkoutActivity, MainActivity::class.java)
+                                startActivity(navigate)
+                            })
+                        {
+                            Icon(imageVector = Icons.Filled.Home,
+                                contentDescription = null,
+                                modifier = Modifier.size(50.dp),
+                                tint = Teal200
+                            )
+                        }
+                    }
                     Column {
                         val workoutWeek = listOf(
                             MyWorkoutDay(

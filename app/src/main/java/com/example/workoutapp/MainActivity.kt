@@ -219,7 +219,13 @@ class MainActivity : ComponentActivity() {
                             id = "My Workouts",
                             title = "Workouts",
                             contentDescription = "Go to Settings",
-                            icon = Icons.Default.Delete
+                            icon = Icons.Default.List
+                        ),
+                        MenuItem(
+                            id = "My Groups",
+                            title = "Groups",
+                            contentDescription = "Go to Settings",
+                            icon = Icons.Default.AddCircle
                         ),
                         MenuItem(
                             id = "Login",
@@ -237,6 +243,9 @@ class MainActivity : ComponentActivity() {
                             startActivity(navigate)
                         } else if (it.title == "Profile"){
                             val navigate = Intent(this@MainActivity, ProfileActivity::class.java)
+                            startActivity(navigate)
+                        }else if (it.title == "Groups"){
+                            val navigate = Intent(this@MainActivity, GroupsActivity::class.java)
                             startActivity(navigate)
                         }
 
@@ -343,11 +352,8 @@ class MainActivity : ComponentActivity() {
                         text = stringResource(id = R.string.Goals),
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .width(1000.dp),
-                        textAlign = TextAlign.Center
+                        modifier = Modifier.padding(3.dp),
+                        textDecoration = TextDecoration.Underline
 
                     )
                     Box(
@@ -780,30 +786,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainPagePreview() {
         WorkoutAppTheme {
-            MyWorkouts(
-                myWorkoutWeek = listOf(
-                    MyWorkoutDay(
-                        day = "Monday",
-                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                    ),
-                    MyWorkoutDay(
-                        day = "Tuesday",
-                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                    ),
-                    MyWorkoutDay(
-                        day = "Wednesday",
-                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                    ),
-                    MyWorkoutDay(
-                        day = "Thursday",
-                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                    ),
-                    MyWorkoutDay(
-                        day = "Friday",
-                        exercises = listOf("Pushups", "Bench Press", " Cardio", "Add Workout")
-                    ),
-                )
-            )
+
         }
 
     }

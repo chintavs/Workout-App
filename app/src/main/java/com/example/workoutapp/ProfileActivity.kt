@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -34,18 +35,53 @@ class ProfileActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal =  17.dp, vertical = 11.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        IconButton(
+                            onClick = {
+                                val navigate = Intent(this@ProfileActivity, MainActivity::class.java)
+                                startActivity(navigate)
+                            })
+                        {
+                            Icon(imageVector = Icons.Filled.Home,
+                                contentDescription = null,
+                                modifier = Modifier.size(50.dp),
+                                tint = Teal200
+                            )
+                        }
+                    }
+
                     Column {
                         val workouts = listOf(
                             Workout(
-                                name = "",
-                                exercises = listOf("")
+                                name = "Chest and Triceps",
+                                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+                            ),
+                            Workout(
+                                name = "Back and Biceps",
+                                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+                            ),
+                            Workout(
+                                name = "Leg Day",
+                                exercises = listOf("Squats", "Leg Press", "Calf Raises")
                             )
                         )
 
                         val goals = listOf(
                             Goal(
-                                name = "",
-                                progress = ""
+                                name = "Gain 10kg",
+                                progress = "30"
+                            ),
+                            Goal(
+                                name = "Build Core Strength",
+                                progress = "60"
+                            ),
+                            Goal(
+                                name = "Gain 3kg of muscle",
+                                progress = "99"
                             )
                         )
 
@@ -67,7 +103,9 @@ class ProfileActivity : ComponentActivity() {
 //function ProfileScreen to add a header image to user's profile
 @Composable
 fun ProfileScreen() {
-    Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(200.dp)) {
         Image(
             painter = painterResource(id = R.drawable.profile_header),
             contentDescription = "Profile Header Image",
@@ -214,7 +252,9 @@ fun WorkoutItem(workout: Workout) {
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
         ) {
             Text(text = workout.name, fontWeight = FontWeight.Bold)
             Icon(
@@ -252,9 +292,8 @@ fun ExerciseItem(exercise: String) {
    workouts and three goals, each with their name and progress. The preview showcases how the UserProfile
    composable arranges the user's information and goals and workouts in a visually appealing manner. */
 
-
+@Preview(showBackground = true)
 @Composable
-
 fun ProfilePage() {
     val workouts = listOf(
         Workout(
