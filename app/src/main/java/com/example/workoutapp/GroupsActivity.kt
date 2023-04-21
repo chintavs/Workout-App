@@ -27,6 +27,7 @@ class GroupsActivity : ComponentActivity() {
 
     private var selectedGroup: Group? = null
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private var groupMembersText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,12 +121,6 @@ class GroupsActivity : ComponentActivity() {
                 text = "$name's Groups"
             )
             GroupSpinner(groups = groups)
-
-            selectedGroup?.let {
-                Text(
-                    text = it.membersToString()
-                )
-            }
         }
 
     }
@@ -152,12 +147,43 @@ class GroupsActivity : ComponentActivity() {
                             expanded = false
                             groupText = singleGroup.nameToString()
                             selectedGroup = singleGroup
+                            groupMembersText = selectedGroup!!.membersToString()
                         }) {
-                            Text(text = singleGroup.toString())
+                            Text(text = singleGroup.nameToString())
                         }
                     }
                 }
             }
+        }
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+
+            ){
+                Row(
+                    Modifier
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = "Group Members:"
+                    )
+                }
+
+                Row(
+                    Modifier
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = groupMembersText
+                    )
+                }
+            }
+
         }
     }
 }
