@@ -1,8 +1,11 @@
 package com.example.workoutapp
 
+import android.content.Intent
 import android.os.Bundle
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,35 +13,77 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.workoutapp.ui.theme.Teal200
+
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
-import kotlinx.coroutines.launch
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             WorkoutAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal =  17.dp, vertical = 11.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        IconButton(
+                            onClick = {
+                                val navigate = Intent(this@ProfileActivity, MainActivity::class.java)
+                                startActivity(navigate)
+                            })
+                        {
+                            Icon(imageVector = Icons.Filled.Home,
+                                contentDescription = null,
+                                modifier = Modifier.size(50.dp),
+                                tint = Teal200
+                            )
+                        }
+                    }
+
                     Column {
                         val workouts = listOf(
                             Workout(
-                                name = "",
-                                exercises = listOf("")
+                                name = "Chest and Triceps",
+                                exercises = listOf("Bench Press", "Incline Bench Press", "Skull Crushers")
+                            ),
+                            Workout(
+                                name = "Back and Biceps",
+                                exercises = listOf("Deadlifts", "Chin-ups", "Barbell Curls")
+                            ),
+                            Workout(
+                                name = "Leg Day",
+                                exercises = listOf("Squats", "Leg Press", "Calf Raises")
                             )
                         )
 
                         val goals = listOf(
                             Goal(
-                                name = "",
-                                progress = ""
+                                name = "Gain 10kg",
+                                progress = "30"
+                            ),
+                            Goal(
+                                name = "Build Core Strength",
+                                progress = "60"
+                            ),
+                            Goal(
+                                name = "Gain 3kg of muscle",
+                                progress = "99"
                             )
                         )
 
@@ -56,6 +101,23 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 }
+
+//function ProfileScreen to add a header image to user's profile
+@Composable
+fun ProfileScreen() {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(200.dp)) {
+        Image(
+            painter = painterResource(id = R.drawable.profile_header),
+            contentDescription = "Profile Header Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+    // rest of the profile screen UI goes here
+}
+
 
 /* Composable function UserProfile for displaying a user's profile information with goals and workouts in Kotlin. */
 
@@ -83,61 +145,7 @@ fun UserProfile(
         modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
-        Scaffold(
 
-            scaffoldState = scaffoldState,
-
-            topBar = {
-
-                AppBar {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-
-                }
-
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                DrawerHeader()
-                DrawerBody(
-                    items = listOf(
-                        MenuItem(
-                            id = "Home",
-                            title = "Home",
-                            contentDescription = "Go to Home Screen",
-                            icon = Icons.Default.Home
-                        ),
-                        MenuItem(
-                            id = "Profile",
-                            title = "Profile",
-                            contentDescription = "Go to Profile Page",
-                            icon = Icons.Default.Person
-                        ),
-                        MenuItem(
-                            id = "Settings",
-                            title = "Settings",
-                            contentDescription = "Go to Settings",
-                            icon = Icons.Default.Settings
-                        ),
-
-                        MenuItem(
-                            id = "Login",
-                            title = "Login",
-                            contentDescription = "Login",
-                            icon = Icons.Default.Lock
-                        ),
-                    ),
-                    onItemClick = {
-
-                    }
-                )
-
-
-            },
-            content = {
                 Column(
                     modifier = modifier
                         .padding(16.dp)
@@ -192,11 +200,8 @@ fun UserProfile(
 
                 }
             }
-        )
-
 
     }
-}
 
 /* Composable function GoalItem that displays a single goal item in a Column layout. The function takes in a
    Goal data class object as a parameter, which contains the name of the goal and its progress as a percentage. */
@@ -206,6 +211,7 @@ fun UserProfile(
 
 /* The progress parameter is converted to a Float and divided by 100 to display the progress as a value
    between 0 and 1 for the LinearProgressIndicator. */
+
 
 data class Goal(val name: String, val progress: String)
 @Composable
@@ -248,7 +254,9 @@ fun WorkoutItem(workout: Workout) {
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
         ) {
             Text(text = workout.name, fontWeight = FontWeight.Bold)
             Icon(
@@ -288,8 +296,7 @@ fun ExerciseItem(exercise: String) {
 
 @Preview(showBackground = true)
 @Composable
-
-fun DefaultProfilePreview() {
+fun ProfilePage() {
     val workouts = listOf(
         Workout(
             name = "Chest and Triceps",
